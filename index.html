@@ -99,7 +99,7 @@ img{display:block;max-width:100%}
   min-width:16px;height:16px;border-radius:10px;display:grid;place-items:center;padding:0 4px;font-weight:700}
 
 /* onboarding */
-.ob{position:absolute;inset:0;background:var(--bg2);z-index:40;display:flex;flex-direction:column;padding:0 22px}
+.ob{position:absolute;inset:0;background:var(--bg2);z-index:40;display:flex;flex-direction:column;padding:0 22px;overflow-y:auto}
 .ob .hero{flex:1;display:flex;flex-direction:column;justify-content:center;gap:8px}
 .ob .k{font-family:Fraunces;font-size:40px;font-weight:700;line-height:1.05;letter-spacing:-1px}
 .ob .k b{color:var(--amber)}
@@ -114,6 +114,19 @@ img{display:block;max-width:100%}
 .nlbox{display:flex;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:6px 6px 6px 14px;align-items:center}
 .nlbox input{flex:1;background:none;border:0;color:var(--ink);font-size:14px;outline:none;font-family:inherit}
 .nlbox .go{background:var(--amber-soft);color:var(--amber);border-radius:10px;padding:8px 12px;font-weight:700}
+.steplbl{font-size:11px;color:var(--dim);font-weight:700;letter-spacing:.6px;text-transform:uppercase;margin-bottom:6px}
+.vstep{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-top:8px}
+.vstep .vl{display:flex;flex-direction:column;gap:2px;flex:1}
+.vstep .vl b{font-size:13.5px}
+.vstep .vl small{font-size:11.5px;color:var(--mut)}
+.vstep .vb{font-size:12px;font-weight:700;color:var(--amber);background:var(--amber-soft);border:1px solid var(--amber);border-radius:20px;padding:7px 13px;white-space:nowrap}
+.vstep.done{border-color:var(--like)}
+.vstep.done .vb{color:var(--like);background:rgba(55,209,155,.15);border-color:var(--like)}
+.mtag{display:inline-flex;align-items:center;font-size:10px;font-weight:600;color:var(--mut);background:var(--card2);border:1px solid var(--line);border-radius:8px;padding:3px 7px;margin:5px 5px 0 0;white-space:nowrap}
+.mtag.ok{color:var(--like);background:rgba(55,209,155,.13);border-color:rgba(55,209,155,.4)}
+.mtag.warn{color:var(--amber);background:var(--amber-soft);border-color:rgba(240,161,62,.4)}
+.score{font-size:10px;font-weight:800;color:var(--like);background:rgba(55,209,155,.15);border:1px solid rgba(55,209,155,.4);border-radius:8px;padding:3px 8px;white-space:nowrap}
+.tags{display:flex;flex-wrap:wrap;margin-top:2px}
 
 /* lists (matches/chat) */
 .list{flex:1;overflow:auto;padding:6px 14px 20px}
@@ -279,9 +292,57 @@ img{display:block;max-width:100%}
       <div class="notch"></div>
       <div class="screen">
 
+        <!-- registo / verificação do comprador (Passo 1) -->
+        <div class="ob" id="reg" style="z-index:42">
+          <div class="hero" style="justify-content:flex-start;padding:16px 0 0">
+            <div class="steplbl">Passo 1 de 2 · Criar perfil</div>
+            <div class="k">Cria o teu <b>perfil</b>.</div>
+            <p>Aberto a qualquer pessoa. Quanto mais completo e verificado, mais prioridade tens — e mais pontos em comum com o imóvel e o agente certo.</p>
+
+            <div class="label">O teu nome</div>
+            <div class="nlbox"><input id="regName" placeholder="Ex.: Tiago Santos"></div>
+            <div class="label">Contacto</div>
+            <div class="nlbox"><input id="regPhone" placeholder="Telemóvel ou e-mail"></div>
+
+            <div class="label">Identidade</div>
+            <button class="vstep" id="vId" onclick="verifyId()">
+              <span class="vl"><b>Verificar identidade</b><small>Confirma que és uma pessoa real</small></span>
+              <span class="vb">Verificar</span>
+            </button>
+
+            <div class="label">Como vais comprar?</div>
+            <div class="chips" id="buyFin">
+              <button class="pref on" onclick="pick(this)">Com crédito</button>
+              <button class="pref" onclick="pick(this)">A pronto</button>
+            </div>
+
+            <div class="label">Tens crédito aprovado?</div>
+            <div class="chips" id="buyApr">
+              <button class="pref on" onclick="pick(this)">Aprovado</button>
+              <button class="pref" onclick="pick(this)">Em análise</button>
+              <button class="pref" onclick="pick(this)">Ainda não</button>
+            </div>
+
+            <div class="label">Precisas de vender antes de comprar?</div>
+            <div class="chips" id="buySell">
+              <button class="pref" onclick="pick(this)">Não</button>
+              <button class="pref on" onclick="pick(this)">Sim</button>
+            </div>
+
+            <div class="label">Qual a urgência da compra?</div>
+            <div class="chips" id="buyUrg">
+              <button class="pref on" onclick="pick(this)">Até 3 meses</button>
+              <button class="pref" onclick="pick(this)">3–6 meses</button>
+              <button class="pref" onclick="pick(this)">Sem pressa</button>
+            </div>
+          </div>
+          <button class="cta" onclick="createProfile()">Continuar para as casas →</button>
+        </div>
+
         <!-- onboarding -->
         <div class="ob" id="ob">
           <div class="hero">
+            <div class="steplbl">Passo 2 de 2 · O que procuras</div>
             <div class="k">Encontra a casa<br>que te <b>encaixa</b>.</div>
             <p>Diz-nos o que procuras. A nossa IA mostra-te só o que faz sentido — e liga-te ao agente certo.</p>
             <div style="display:flex;align-items:center;gap:8px;margin-top:12px;font-size:12px;font-weight:600">
@@ -345,9 +406,10 @@ img{display:block;max-width:100%}
           <div class="htitle">Perfil</div>
           <div style="text-align:center;padding:10px 0 6px">
             <div style="width:90px;height:90px;border-radius:26px;margin:0 auto;background-size:cover;background-position:center;border:3px solid var(--amber);background-image:url('https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&q=60')"></div>
-            <div style="font-weight:700;font-size:18px;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:7px">Tiago S. <span style="font-size:11px;font-weight:700;color:var(--info);background:rgba(90,169,255,.16);border:1px solid rgba(90,169,255,.4);padding:3px 9px;border-radius:20px">✓ Verificado</span></div>
+            <div style="font-weight:700;font-size:18px;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:7px"><span id="profName">Tiago S.</span> <span style="font-size:11px;font-weight:700;color:var(--info);background:rgba(90,169,255,.16);border:1px solid rgba(90,169,255,.4);padding:3px 9px;border-radius:20px">✓ Verificado</span></div>
             <div style="color:var(--mut);font-size:13px">A procurar T2 · até 250 000 € · Odivelas</div>
           </div>
+          <div class="panel" id="profSit" style="margin:12px 4px 0"></div>
           <div class="panel" style="margin:12px 4px">
             <h3 style="font-size:14px">A tua procura ✦</h3>
             <div class="sub">A IA afina isto a cada swipe</div>
@@ -432,7 +494,7 @@ img{display:block;max-width:100%}
           <div class="grid2">
             <div class="panel">
               <div style="display:flex;justify-content:space-between;align-items:center"><h3>Matches recentes</h3><span class="tag2">qualificados por IA</span></div>
-              <div class="sub">Compradores que gostaram dos teus imóveis</div>
+              <div class="sub">Ordenados por pontos em comum contigo e com os teus imóveis</div>
               <div id="aMatchList"></div>
             </div>
             <div class="panel">
@@ -653,12 +715,59 @@ function aiReply(q){
 
 /* ================= AGENT ================= */
 const buyers=[
-  {n:"Comprador · T2 Odivelas",s:"até 250 000 € · varanda · perto de metro",img:"https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&q=60",q:"ok",qt:"Crédito pré-aprovado",prop:"T2 Colinas do Cruzeiro"},
-  {n:"Casal · T3 com garagem",s:"até 320 000 € · 3 quartos · garagem",img:"https://images.unsplash.com/photo-1521119989659-a83eee488004?w=120&q=60",q:"ok",qt:"Pré-aprovado · pronto a visitar",prop:"T3 Ramada"},
-  {n:"Compradora · T2 varanda",s:"até 260 000 € · exposição sul",img:"https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=120&q=60",q:"mid",qt:"A tratar do crédito",prop:"T2 varanda sul"},
-  {n:"Investidor · T1/T2",s:"até 220 000 € · para arrendar",img:"https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=120&q=60",q:"ok",qt:"Compra a pronto",prop:"T1+1 Póvoa"},
-  {n:"Família · T3 Ramada",s:"até 300 000 € · perto de escolas",img:"https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120&q=60",q:"mid",qt:"A comparar zonas",prop:"T3 Ramada"},
+  {n:"Comprador · T2 Odivelas",s:"até 250 000 € · varanda · perto de metro",img:"https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&q=60",prop:"T2 Colinas do Cruzeiro",financing:"credito",approved:true,sellFirst:false,urgency:"Até 3 meses",score:91},
+  {n:"Casal · T3 com garagem",s:"até 320 000 € · 3 quartos · garagem",img:"https://images.unsplash.com/photo-1521119989659-a83eee488004?w=120&q=60",prop:"T3 Ramada",financing:"credito",approved:true,sellFirst:true,urgency:"3–6 meses",score:83},
+  {n:"Compradora · T2 varanda",s:"até 260 000 € · exposição sul",img:"https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=120&q=60",prop:"T2 varanda sul",financing:"credito",approved:false,sellFirst:false,urgency:"Sem pressa",score:72},
+  {n:"Investidor · T1/T2",s:"até 220 000 € · para arrendar",img:"https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=120&q=60",prop:"T1+1 Póvoa",financing:"pronto",approved:false,sellFirst:false,urgency:"Até 3 meses",score:88},
+  {n:"Família · T3 Ramada",s:"até 300 000 € · perto de escolas",img:"https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120&q=60",prop:"T3 Ramada",financing:"credito",approved:false,sellFirst:true,urgency:"3–6 meses",score:69},
 ];
+/* ---------- perfil do comprador ---------- */
+let profile={name:'',financing:'Com crédito',approved:'Aprovado',sellFirst:'Sim',urgency:'Até 3 meses'};
+function pick(b){[...b.parentNode.children].forEach(x=>x.classList.remove('on'));b.classList.add('on')}
+function verifyId(){const el=document.getElementById('vId');el.classList.add('done');el.querySelector('.vb').textContent='✓ Verificado'}
+function chosen(id){const e=document.querySelector('#'+id+' .pref.on');return e?e.textContent.trim():''}
+function createProfile(){
+  profile.name=(document.getElementById('regName').value||'Tiago Santos').trim();
+  profile.financing=chosen('buyFin'); profile.approved=chosen('buyApr');
+  profile.sellFirst=chosen('buySell'); profile.urgency=chosen('buyUrg');
+  const pn=document.getElementById('profName'); if(pn) pn.textContent=profile.name;
+  renderSituacao();
+  document.getElementById('reg').style.display='none';
+}
+function renderSituacao(){
+  const p=document.getElementById('profSit'); if(!p)return;
+  const tags=[
+    profile.financing==='A pronto'?'<span class="mtag ok">💰 Compra a pronto</span>':'<span class="mtag">🏦 Com crédito</span>',
+    profile.approved==='Aprovado'?'<span class="mtag ok">✓ Crédito aprovado</span>':(profile.approved==='Em análise'?'<span class="mtag warn">◔ Crédito em análise</span>':'<span class="mtag warn">Crédito ainda não</span>'),
+    profile.sellFirst==='Sim'?'<span class="mtag warn">🔁 Vende antes de comprar</span>':'<span class="mtag ok">✓ Não precisa de vender</span>',
+    '<span class="mtag">⏱ '+(profile.urgency||'Até 3 meses')+'</span>'
+  ].join('');
+  p.innerHTML='<h3 style="font-size:14px">A minha situação 📋</h3><div class="sub">O agente vê isto — mais pontos em comum, melhor match</div><div class="tags">'+tags+'</div>';
+}
+/* representa o próprio utilizador como comprador no lado do agente */
+function meBuyer(){
+  return {n:(profile.name||'Tiago Santos'),s:'T2 · até 250 000 € · Odivelas',img:'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120&q=60',prop:'T2 Colinas do Cruzeiro',
+    financing:profile.financing==='A pronto'?'pronto':'credito',approved:profile.approved==='Aprovado',sellFirst:profile.sellFirst==='Sim',urgency:profile.urgency||'Até 3 meses',score:94,me:true};
+}
+function buyerTags(b){
+  return [
+    b.financing==='pronto'?'<span class="mtag ok">💰 A pronto</span>':'<span class="mtag">🏦 Com crédito</span>',
+    b.approved?'<span class="mtag ok">✓ Crédito aprovado</span>':'<span class="mtag warn">◔ Crédito por tratar</span>',
+    b.sellFirst?'<span class="mtag warn">🔁 Vende antes</span>':'<span class="mtag ok">✓ Sem venda pendente</span>',
+    '<span class="mtag">⏱ '+b.urgency+'</span>'
+  ].join('');
+}
+function buyerRow(b,full){
+  const meTag=b.me?'<span class="mtag" style="color:var(--amber);background:var(--amber-soft);border-color:var(--amber)">o teu perfil</span>':'';
+  const acts=full?'<button class="sbtn">Perfil</button><button class="sbtn">Mensagem</button><button class="sbtn p">Marcar visita</button>':'<button class="sbtn p">Marcar visita</button>';
+  return `<div class="mrow"><div class="a" style="background-image:url('${b.img}')"></div>
+    <div style="flex:1;min-width:0">
+      <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap"><span class="n">${b.n}</span>${meTag}<span class="score">${b.score}% em comum</span></div>
+      <div class="s">${b.s}${full?' · quer '+b.prop:''}</div>
+      <div class="tags">${buyerTags(b)}</div>
+    </div>
+    <div class="act2">${acts}</div></div>`;
+}
 const demand=[
   {k:"T2 · até 260k · Colinas do Cruzeiro",v:88,n:"24 compradores"},
   {k:"T3 · até 320k · Ramada",v:64,n:"17 compradores"},
@@ -685,15 +794,10 @@ const agenda=[
 ];
 function qbadge(q,t){return `<span class="qbadge ${q==='ok'?'qb-ok':'qb-mid'}">${q==='ok'?'✓':'◔'} ${t}</span>`}
 function buildAgent(){
-  // recent matches (mini)
-  document.getElementById('aMatchList').innerHTML=buyers.slice(0,3).map(b=>`
-    <div class="mrow"><div class="a" style="background-image:url('${b.img}')"></div>
-      <div><div class="n">${b.n}</div><div class="s">${b.s}</div><div style="margin-top:5px">${qbadge(b.q,b.qt)}</div></div>
-      <div class="act2"><button class="sbtn">Ver</button><button class="sbtn p">Marcar visita</button></div></div>`).join('');
-  document.getElementById('aMatchFull').innerHTML=buyers.map(b=>`
-    <div class="mrow"><div class="a" style="background-image:url('${b.img}')"></div>
-      <div><div class="n">${b.n}</div><div class="s">${b.s} · interessado em ${b.prop}</div><div style="margin-top:5px">${qbadge(b.q,b.qt)}</div></div>
-      <div class="act2"><button class="sbtn">Perfil</button><button class="sbtn">Mensagem</button><button class="sbtn p">Marcar visita</button></div></div>`).join('');
+  // lista de compradores (inclui o próprio utilizador se já criou perfil), ordenada por pontos em comum
+  const list=(profile.name?[meBuyer()]:[]).concat(buyers).sort((a,b)=>b.score-a.score);
+  document.getElementById('aMatchList').innerHTML=list.slice(0,3).map(b=>buyerRow(b,false)).join('');
+  document.getElementById('aMatchFull').innerHTML=list.map(b=>buyerRow(b,true)).join('');
   // demand
   const dm=demand.map(d=>`<div class="dm"><div class="t"><b>${d.k}</b><span>${d.n}</span></div><div class="bar"><i style="width:${d.v}%"></i></div></div>`).join('');
   document.getElementById('aDemandMini').innerHTML=dm;document.getElementById('aDemandFull').innerHTML=dm;
