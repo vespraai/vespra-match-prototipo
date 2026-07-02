@@ -3,22 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>Vespra Match · Protótipo</title>
+<title>ImoMatch · Protótipo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0a0b0f; --bg2:#0e1016; --card:#15171f; --card2:#1b1e28; --line:#262a36;
-  --ink:#f4f5f7; --mut:#9aa0ab; --dim:#6b7280;
-  --amber:#f0a13e; --amber-d:#c77f1a; --amber-soft:rgba(240,161,62,.14);
-  --like:#37d19b; --pass:#ff5a6a; --info:#5aa9ff; --violet:#9b7bff;
-  --grad:linear-gradient(135deg,#f0a13e,#ff7a59);
-  --shadow:0 24px 60px -20px rgba(0,0,0,.7);
+  --bg:#fff7f4; --bg2:#ffffff; --card:#fff1ec; --card2:#f7e7e0; --line:#f1ddd4;
+  --ink:#1f1620; --mut:#7c7580; --dim:#a99f9c;
+  --amber:#ff4d7d; --amber-d:#e63e6a; --amber-soft:rgba(255,77,125,.12);
+  --like:#10b981; --pass:#ff5a6a; --info:#3b82f6; --violet:#8b5cff;
+  --grad:linear-gradient(135deg,#ff4d7d,#ff6a3d);
+  --shadow:0 24px 60px -22px rgba(255,90,120,.35);
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;height:100%}
-body{background:radial-gradient(1200px 700px at 80% -10%,#1a1410 0,transparent 60%),var(--bg);
+body{background:radial-gradient(1200px 700px at 80% -10%,#ffe4d8 0,transparent 60%),var(--bg);
   color:var(--ink);font-family:Inter,system-ui,sans-serif;overflow:hidden}
 .serif{font-family:Fraunces,Georgia,serif}
 .mono{font-family:'JetBrains Mono',monospace}
@@ -28,14 +28,14 @@ img{display:block;max-width:100%}
 /* ===== top demo switch ===== */
 .topbar{position:fixed;top:0;left:0;right:0;height:56px;display:flex;align-items:center;
   justify-content:space-between;padding:0 20px;z-index:50;
-  background:linear-gradient(180deg,rgba(10,11,15,.9),rgba(10,11,15,.3));backdrop-filter:blur(8px)}
+  background:linear-gradient(180deg,rgba(255,247,244,.92),rgba(255,247,244,.35));backdrop-filter:blur(8px)}
 .brand{font-family:Fraunces;font-weight:700;font-size:20px;letter-spacing:-.3px}
 .brand b{color:var(--amber)}
 .brand .tag{font-family:Inter;font-weight:500;font-size:10px;color:var(--dim);margin-left:8px;
   border:1px solid var(--line);padding:2px 7px;border-radius:20px;vertical-align:middle}
 .seg{display:flex;background:var(--card);border:1px solid var(--line);border-radius:30px;padding:4px}
 .seg button{padding:7px 16px;border-radius:24px;font-size:13px;font-weight:600;color:var(--mut);transition:.2s}
-.seg button.on{background:var(--grad);color:#20140a}
+.seg button.on{background:var(--grad);color:#fff}
 .stage{position:fixed;inset:56px 0 0 0;display:grid;place-items:center;overflow:auto}
 
 /* ===== phone frame ===== */
@@ -72,8 +72,8 @@ img{display:block;max-width:100%}
 .pcard .loc{color:#d7dae0;font-size:13px;margin-top:3px;display:flex;align-items:center;gap:5px}
 .facts{display:flex;gap:14px;margin-top:12px}
 .fact{display:flex;align-items:center;gap:6px;font-size:13px;color:#eef0f3}
-.why{margin-top:12px;background:rgba(240,161,62,.16);border:1px solid rgba(240,161,62,.35);
-  padding:9px 12px;border-radius:12px;font-size:12px;color:#ffe6c4;display:flex;gap:8px;align-items:flex-start}
+.why{margin-top:12px;background:rgba(255,77,125,.22);border:1px solid rgba(255,77,125,.45);
+  padding:9px 12px;border-radius:12px;font-size:12px;color:#ffe9ef;display:flex;gap:8px;align-items:flex-start}
 .why b{color:#fff}
 .stamp{position:absolute;top:40px;font-family:Fraunces;font-weight:700;font-size:34px;padding:6px 16px;
   border-radius:12px;border:4px solid;opacity:0;transform:rotate(-14deg);pointer-events:none}
@@ -87,7 +87,7 @@ img{display:block;max-width:100%}
 .act:active{transform:scale(.9)}
 .act.sm{width:50px;height:50px;font-size:19px}
 .act.pass{color:var(--pass)} .act.like{color:var(--like)} .act.star{color:var(--info)}
-.act.big{background:var(--grad);color:#20140a;border:0}
+.act.big{background:var(--grad);color:#fff;border:0}
 
 /* bottom nav */
 .bnav{display:flex;justify-content:space-around;padding:10px 6px calc(14px + env(safe-area-inset-bottom));
@@ -109,7 +109,7 @@ img{display:block;max-width:100%}
 .pref{padding:9px 14px;border-radius:22px;border:1px solid var(--line);background:var(--card);font-size:13px;font-weight:600;color:var(--mut);transition:.15s}
 .pref.on{background:var(--amber-soft);border-color:var(--amber);color:var(--amber)}
 .range{width:100%;margin-top:8px;accent-color:var(--amber)}
-.cta{background:var(--grad);color:#20140a;font-weight:800;font-size:16px;padding:16px;border-radius:16px;
+.cta{background:var(--grad);color:#fff;font-weight:800;font-size:16px;padding:16px;border-radius:16px;
   width:100%;margin:20px 0 26px;box-shadow:0 12px 30px -10px var(--amber-d)}
 .nlbox{display:flex;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:6px 6px 6px 14px;align-items:center}
 .nlbox input{flex:1;background:none;border:0;color:var(--ink);font-size:14px;outline:none;font-family:inherit}
@@ -155,27 +155,27 @@ img{display:block;max-width:100%}
 .msgs{flex:1;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
 .msg{max-width:78%;padding:10px 13px;border-radius:16px;font-size:13.5px;line-height:1.5}
 .msg.them{background:var(--card);border:1px solid var(--line);border-bottom-left-radius:5px;align-self:flex-start}
-.msg.me{background:var(--grad);color:#20140a;border-bottom-right-radius:5px;align-self:flex-end;font-weight:500}
+.msg.me{background:var(--grad);color:#fff;border-bottom-right-radius:5px;align-self:flex-end;font-weight:500}
 .msg.ai{background:linear-gradient(135deg,rgba(155,123,255,.16),rgba(90,169,255,.12));border:1px solid rgba(155,123,255,.35);align-self:flex-start;border-bottom-left-radius:5px}
 .msg.ai .who{font-size:10px;color:var(--violet);font-weight:700;margin-bottom:3px;display:flex;gap:5px;align-items:center}
 .qk{display:flex;gap:8px;flex-wrap:wrap;padding:6px 16px 12px}
 .qk button{border:1px solid var(--amber);color:var(--amber);background:var(--amber-soft);border-radius:20px;padding:8px 12px;font-size:12px;font-weight:600}
 .cinput{display:flex;gap:8px;padding:10px 12px calc(14px + env(safe-area-inset-bottom));border-top:1px solid var(--line)}
 .cinput input{flex:1;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:11px 16px;color:var(--ink);outline:none;font-family:inherit;font-size:14px}
-.cinput .snd{width:44px;height:44px;border-radius:50%;background:var(--grad);color:#20140a;font-size:18px;display:grid;place-items:center}
+.cinput .snd{width:44px;height:44px;border-radius:50%;background:var(--grad);color:#fff;font-size:18px;display:grid;place-items:center}
 
 /* match overlay */
-.matchov{position:absolute;inset:0;z-index:60;background:rgba(8,6,4,.85);backdrop-filter:blur(10px);
+.matchov{position:absolute;inset:0;z-index:60;background:rgba(255,244,240,.94);backdrop-filter:blur(10px);
   display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px}
 .matchov.show{display:flex;animation:fade .3s}
 @keyframes fade{from{opacity:0}to{opacity:1}}
 .matchov .big{font-family:Fraunces;font-weight:700;font-size:48px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:-1px;animation:pop .5s cubic-bezier(.2,1.4,.4,1)}
 @keyframes pop{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
-.matchov p{color:#e7d9c7;margin:10px 0 4px;max-width:280px}
+.matchov p{color:#6b6470;margin:10px 0 4px;max-width:280px}
 .pairimg{display:flex;gap:-10px;margin:18px 0}
 .pairimg div{width:96px;height:96px;border-radius:24px;background-size:cover;background-position:center;border:3px solid var(--amber)}
 .pairimg div:last-child{margin-left:-18px}
-.matchov .b1{background:var(--grad);color:#20140a;font-weight:800;padding:14px 30px;border-radius:14px;margin-top:22px;font-size:15px}
+.matchov .b1{background:var(--grad);color:#fff;font-weight:800;padding:14px 30px;border-radius:14px;margin-top:22px;font-size:15px}
 .matchov .b2{margin-top:12px;color:var(--mut);font-size:13px;font-weight:600}
 
 /* ===== agent dashboard ===== */
@@ -197,7 +197,7 @@ img{display:block;max-width:100%}
 .dhead{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:22px}
 .dhead h1{font-family:Fraunces;font-weight:700;font-size:28px;margin:0}
 .dhead p{color:var(--mut);font-size:13px;margin:4px 0 0}
-.dbtn{background:var(--grad);color:#20140a;font-weight:700;font-size:13px;padding:11px 18px;border-radius:12px}
+.dbtn{background:var(--grad);color:#fff;font-weight:700;font-size:13px;padding:11px 18px;border-radius:12px}
 .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
 .kpi{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px}
 .kpi .l{color:var(--mut);font-size:12px;font-weight:600;display:flex;align-items:center;gap:7px}
@@ -225,7 +225,7 @@ img{display:block;max-width:100%}
 .qb-mid{background:rgba(240,161,62,.15);color:var(--amber)}
 .mrow .act2{margin-left:auto;display:flex;gap:8px}
 .sbtn{border:1px solid var(--line);background:var(--bg2);border-radius:10px;padding:8px 12px;font-size:12px;font-weight:600;color:var(--ink)}
-.sbtn.p{background:var(--grad);color:#20140a;border:0}
+.sbtn.p{background:var(--grad);color:#fff;border:0}
 .invgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 .inv{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
 .inv .ph{height:120px;background-size:cover;background-position:center;position:relative}
@@ -240,8 +240,8 @@ img{display:block;max-width:100%}
 .agdrow{display:flex;gap:14px;align-items:center;padding:13px;border:1px solid var(--line);border-radius:14px;margin-bottom:10px;background:var(--card)}
 .agdrow .tm{font-family:Fraunces;font-weight:700;font-size:18px;width:64px}
 .agdrow .info b{font-size:13.5px}.agdrow .info div{color:var(--mut);font-size:12px;margin-top:2px}
-.callout{background:linear-gradient(135deg,rgba(240,161,62,.14),rgba(155,123,255,.10));border:1px solid rgba(240,161,62,.3);border-radius:14px;padding:14px 16px;font-size:13px;color:#ffe6c4;display:flex;gap:10px;margin-bottom:18px}
-.callout b{color:#fff}
+.callout{background:linear-gradient(135deg,rgba(255,77,125,.10),rgba(139,92,255,.08));border:1px solid rgba(255,77,125,.28);border-radius:14px;padding:14px 16px;font-size:13px;color:#7a4d5a;display:flex;gap:10px;margin-bottom:18px}
+.callout b{color:#1f1620}
 @media(max-width:1000px){.dash{grid-template-columns:1fr}.side{display:none}.kpis{grid-template-columns:repeat(2,1fr)}.grid2,.invgrid{grid-template-columns:1fr}}
 .foot{position:fixed;bottom:8px;left:0;right:0;text-align:center;color:var(--dim);font-size:11px;z-index:5}
 
@@ -281,7 +281,7 @@ img{display:block;max-width:100%}
 <body>
 
 <div class="topbar">
-  <div class="brand">Vespra<b>Match</b><span class="tag">PROTÓTIPO</span></div>
+  <div class="brand">Imo<b>Match</b><span class="tag">PROTÓTIPO</span></div>
   <div class="seg">
     <button id="segBuyer" class="on" onclick="showView('buyer')">Comprador</button>
     <button id="segAgent" onclick="showView('agent')">Agente</button>
@@ -381,7 +381,7 @@ img{display:block;max-width:100%}
         <!-- discover -->
         <div id="scrDiscover" style="flex:1;display:none;flex-direction:column">
           <div class="bhead">
-            <div class="logo">Vespra<b>Match</b></div>
+            <div class="logo">Imo<b>Match</b></div>
             <div style="display:flex;gap:10px">
               <div class="iconbtn" title="Filtros">⚙</div>
               <div class="iconbtn" title="Preferências">✦</div>
@@ -469,7 +469,7 @@ img{display:block;max-width:100%}
   <div id="viewAgent" class="viewwrap">
     <div class="dash">
       <div class="side">
-        <div class="lg">Vespra<b>Match</b> · Pro</div>
+        <div class="lg">Imo<b>Match</b> · Pro</div>
         <div class="nav on" onclick="aTab('overview',this)"><span class="ic">◧</span>Visão geral</div>
         <div class="nav" onclick="aTab('matches',this)"><span class="ic">♥</span>Matches<span class="pill">7</span></div>
         <div class="nav" onclick="aTab('demand',this)"><span class="ic">📊</span>Inteligência de procura</div>
@@ -542,7 +542,7 @@ img{display:block;max-width:100%}
     </div>
   </div>
 </div>
-<div class="foot">Protótipo Vespra Match · dados ilustrativos de Odivelas · nome provisório (a registar)</div>
+<div class="foot">Protótipo ImoMatch · dados ilustrativos de Odivelas · nome provisório (a registar)</div>
 
 <script>
 /* ---------- data ---------- */
@@ -639,7 +639,7 @@ function fly(dir){
 }
 function swipe(dir){const c=topCard();if(!c){return}fly(dir)}
 function superLike(){const p=props[idx];if(!p)return;fly('right');setTimeout(()=>openChatFor(p,true),320)}
-function askAI(){const p=props[idx];if(!p)return;openChatFor(p,false);setTimeout(()=>{pushAI('Olá! Sou o concierge Vespra 🤖. Sobre o '+p.title+' em '+p.loc.split(',')[0]+': posso dizer-te tudo sobre o imóvel, tratar da pré-aprovação de crédito ou marcar já uma visita. O que precisas?')},350)}
+function askAI(){const p=props[idx];if(!p)return;openChatFor(p,false);setTimeout(()=>{pushAI('Olá! Sou o concierge ImoMatch 🤖. Sobre o '+p.title+' em '+p.loc.split(',')[0]+': posso dizer-te tudo sobre o imóvel, tratar da pré-aprovação de crédito ou marcar já uma visita. O que precisas?')},350)}
 
 /* ---------- match ---------- */
 let lastMatch=null;
@@ -669,8 +669,8 @@ function tab(s,btn){
 const convos=[];
 function addConversation(p){
   if(convos.find(c=>c.title===p.title))return;
-  convos.unshift({title:p.title,agent:p.agent,img:p.img,last:'Concierge Vespra: Olá! Quer marcar visita?',time:'agora',msgs:[
-    {t:'ai',x:'Olá 👋 Sou o concierge Vespra. Gostaste do '+p.title+' — o agente da '+p.agent+' também. Queres marcar visita ou tirar dúvidas?'}
+  convos.unshift({title:p.title,agent:p.agent,img:p.img,last:'Concierge ImoMatch: Olá! Quer marcar visita?',time:'agora',msgs:[
+    {t:'ai',x:'Olá 👋 Sou o concierge ImoMatch. Gostaste do '+p.title+' — o agente da '+p.agent+' também. Queres marcar visita ou tirar dúvidas?'}
   ]});
 }
 function renderMatches(){
@@ -695,14 +695,14 @@ function openChatFor(p,marca,existing){
   const box=document.getElementById('msgs');box.innerHTML='';
   if(existing&&p.msgs){p.msgs.forEach(m=>rawMsg(m.t,m.x))}
   else{
-    rawMsg('ai','Olá 👋 Sou o <b>concierge Vespra</b>. Estás a falar sobre o <b>'+p.title+'</b> ('+p.loc.split(',')[0]+', '+p.price+'). Posso responder sobre o imóvel, tratar do crédito ou marcar visita.');
+    rawMsg('ai','Olá 👋 Sou o <b>concierge ImoMatch</b>. Estás a falar sobre o <b>'+p.title+'</b> ('+p.loc.split(',')[0]+', '+p.price+'). Posso responder sobre o imóvel, tratar do crédito ou marcar visita.');
   }
   if(marca){setTimeout(()=>{pushAI('Tenho disponibilidade do agente para <b>quinta às 18h</b> ou <b>sábado às 11h</b>. Qual preferes? Confirmo já na agenda dele. 📅')},400)}
   document.getElementById('chat').classList.add('open');
 }
 function closeChat(){document.getElementById('chat').classList.remove('open')}
 function rawMsg(t,x){const b=document.getElementById('msgs');const d=document.createElement('div');
-  d.className='msg '+t;d.innerHTML=(t==='ai'?'<div class="who">🤖 Concierge Vespra · IA</div>':'')+x;b.appendChild(d);b.scrollTop=b.scrollHeight}
+  d.className='msg '+t;d.innerHTML=(t==='ai'?'<div class="who">🤖 Concierge ImoMatch · IA</div>':'')+x;b.appendChild(d);b.scrollTop=b.scrollHeight}
 function pushAI(x){rawMsg('ai',x)}
 function send(){const i=document.getElementById('ci');if(!i.value.trim())return;const v=i.value;rawMsg('me',v);i.value='';setTimeout(()=>aiReply(v),500)}
 function quick(x){rawMsg('me',x);setTimeout(()=>aiReply(x),500)}
@@ -807,7 +807,7 @@ function buildAgent(){
   document.getElementById('aDemandMini').innerHTML=dm;document.getElementById('aDemandFull').innerHTML=dm;
   document.getElementById('aOpp').innerHTML=opp.map(o=>`<div class="mrow"><div><div class="n">${o.k}</div><div class="s">${o.d}</div></div><span class="qbadge ${o.lvl==='Alta'?'qb-ok':'qb-mid'}" style="margin-left:auto">${o.lvl==='Alta'?'🔥':'●'} procura ${o.lvl}</span></div>`).join('');
   // inventory
-  document.getElementById('aInvGrid').innerHTML=inv.map(p=>`<div class="inv"><div class="ph" style="background-image:url('${p.img}')"><span class="st"><span class="tag2" style="background:${p.st==='Destaque'?'var(--grad)':'rgba(0,0,0,.55)'};color:${p.st==='Destaque'?'#20140a':'#fff'}">${p.st}</span></span><span class="mt">♥ ${p.m} matches</span></div><div class="in"><div class="pr">${p.pr}</div><div class="ti">${p.ti}</div><div style="margin-top:8px"><span class="energy-b">⚡ Classe ${p.en}</span></div></div></div>`).join('');
+  document.getElementById('aInvGrid').innerHTML=inv.map(p=>`<div class="inv"><div class="ph" style="background-image:url('${p.img}')"><span class="st"><span class="tag2" style="background:${p.st==='Destaque'?'var(--grad)':'rgba(0,0,0,.55)'};color:${p.st==='Destaque'?'#fff':'#fff'}">${p.st}</span></span><span class="mt">♥ ${p.m} matches</span></div><div class="in"><div class="pr">${p.pr}</div><div class="ti">${p.ti}</div><div style="margin-top:8px"><span class="energy-b">⚡ Classe ${p.en}</span></div></div></div>`).join('');
   // agenda
   document.getElementById('aAgendaList').innerHTML=agenda.map(a=>`<div class="agdrow"><div class="tm">${a.tm}</div><div class="info"><b>${a.b}</b><div>${a.d}</div></div><button class="sbtn" style="margin-left:auto">Detalhes</button></div>`).join('');
 }
