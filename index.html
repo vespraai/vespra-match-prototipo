@@ -3,22 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>ImoMatch · Protótipo</title>
+<title>Homio · Protótipo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#fff7f4; --bg2:#ffffff; --card:#fff1ec; --card2:#f7e7e0; --line:#f1ddd4;
-  --ink:#1f1620; --mut:#7c7580; --dim:#a99f9c;
-  --amber:#ff4d7d; --amber-d:#e63e6a; --amber-soft:rgba(255,77,125,.12);
+  --bg:#f7f7fb; --bg2:#ffffff; --card:#f4f2fb; --card2:#eae7f6; --line:#e9e6f2;
+  --ink:#17131f; --mut:#6b6880; --dim:#a29daf;
+  --amber:#a855f7; --amber-d:#7c3aed; --amber-soft:rgba(168,85,247,.12);
   --like:#10b981; --pass:#ff5a6a; --info:#3b82f6; --violet:#8b5cff;
-  --grad:linear-gradient(135deg,#ff4d7d,#ff6a3d);
-  --shadow:0 24px 60px -22px rgba(255,90,120,.35);
+  --grad:linear-gradient(135deg,#ec4899,#a855f7,#3b82f6);
+  --shadow:0 24px 60px -22px rgba(139,92,246,.4);
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;height:100%}
-body{background:radial-gradient(1200px 700px at 80% -10%,#ffe4d8 0,transparent 60%),var(--bg);
+body{background:radial-gradient(1200px 700px at 80% -10%,#ece7ff 0,transparent 60%),var(--bg);
   color:var(--ink);font-family:Inter,system-ui,sans-serif;overflow:hidden}
 .serif{font-family:Fraunces,Georgia,serif}
 .mono{font-family:'JetBrains Mono',monospace}
@@ -28,7 +28,7 @@ img{display:block;max-width:100%}
 /* ===== top demo switch ===== */
 .topbar{position:fixed;top:0;left:0;right:0;height:56px;display:flex;align-items:center;
   justify-content:space-between;padding:0 20px;z-index:50;
-  background:linear-gradient(180deg,rgba(255,247,244,.92),rgba(255,247,244,.35));backdrop-filter:blur(8px)}
+  background:linear-gradient(180deg,rgba(247,247,251,.92),rgba(247,247,251,.35));backdrop-filter:blur(8px)}
 .brand{font-family:Fraunces;font-weight:700;font-size:20px;letter-spacing:-.3px}
 .brand b{color:var(--amber)}
 .brand .tag{font-family:Inter;font-weight:500;font-size:10px;color:var(--dim);margin-left:8px;
@@ -72,8 +72,8 @@ img{display:block;max-width:100%}
 .pcard .loc{color:#d7dae0;font-size:13px;margin-top:3px;display:flex;align-items:center;gap:5px}
 .facts{display:flex;gap:14px;margin-top:12px}
 .fact{display:flex;align-items:center;gap:6px;font-size:13px;color:#eef0f3}
-.why{margin-top:12px;background:rgba(255,77,125,.22);border:1px solid rgba(255,77,125,.45);
-  padding:9px 12px;border-radius:12px;font-size:12px;color:#ffe9ef;display:flex;gap:8px;align-items:flex-start}
+.why{margin-top:12px;background:rgba(139,92,246,.30);border:1px solid rgba(139,92,246,.5);
+  padding:9px 12px;border-radius:12px;font-size:12px;color:#efe9ff;display:flex;gap:8px;align-items:flex-start}
 .why b{color:#fff}
 .stamp{position:absolute;top:40px;font-family:Fraunces;font-weight:700;font-size:34px;padding:6px 16px;
   border-radius:12px;border:4px solid;opacity:0;transform:rotate(-14deg);pointer-events:none}
@@ -165,7 +165,7 @@ img{display:block;max-width:100%}
 .cinput .snd{width:44px;height:44px;border-radius:50%;background:var(--grad);color:#fff;font-size:18px;display:grid;place-items:center}
 
 /* match overlay */
-.matchov{position:absolute;inset:0;z-index:60;background:rgba(255,244,240,.94);backdrop-filter:blur(10px);
+.matchov{position:absolute;inset:0;z-index:60;background:rgba(247,246,252,.94);backdrop-filter:blur(10px);
   display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px}
 .matchov.show{display:flex;animation:fade .3s}
 @keyframes fade{from{opacity:0}to{opacity:1}}
@@ -240,8 +240,8 @@ img{display:block;max-width:100%}
 .agdrow{display:flex;gap:14px;align-items:center;padding:13px;border:1px solid var(--line);border-radius:14px;margin-bottom:10px;background:var(--card)}
 .agdrow .tm{font-family:Fraunces;font-weight:700;font-size:18px;width:64px}
 .agdrow .info b{font-size:13.5px}.agdrow .info div{color:var(--mut);font-size:12px;margin-top:2px}
-.callout{background:linear-gradient(135deg,rgba(255,77,125,.10),rgba(139,92,255,.08));border:1px solid rgba(255,77,125,.28);border-radius:14px;padding:14px 16px;font-size:13px;color:#7a4d5a;display:flex;gap:10px;margin-bottom:18px}
-.callout b{color:#1f1620}
+.callout{background:linear-gradient(135deg,rgba(236,72,153,.10),rgba(59,130,246,.10));border:1px solid rgba(139,92,246,.28);border-radius:14px;padding:14px 16px;font-size:13px;color:#5b5470;display:flex;gap:10px;margin-bottom:18px}
+.callout b{color:#17131f}
 @media(max-width:1000px){.dash{grid-template-columns:1fr}.side{display:none}.kpis{grid-template-columns:repeat(2,1fr)}.grid2,.invgrid{grid-template-columns:1fr}}
 .foot{position:fixed;bottom:8px;left:0;right:0;text-align:center;color:var(--dim);font-size:11px;z-index:5}
 
@@ -281,7 +281,7 @@ img{display:block;max-width:100%}
 <body>
 
 <div class="topbar">
-  <div class="brand">Imo<b>Match</b><span class="tag">PROTÓTIPO</span></div>
+  <div class="brand"><svg width="24" height="24" viewBox="0 0 48 48" fill="none" style="vertical-align:middle;margin-right:7px"><defs><linearGradient id="hg" x1="4" y1="6" x2="44" y2="44" gradientUnits="userSpaceOnUse"><stop stop-color="#ec4899"/><stop offset=".5" stop-color="#a855f7"/><stop offset="1" stop-color="#3b82f6"/></linearGradient></defs><path d="M24 6 L42 21 V39 Q42 42 39 42 H9 Q6 42 6 39 V21 Z" stroke="url(#hg)" stroke-width="3.6" stroke-linejoin="round"/><path d="M24 35 C16.5 29.5 13.5 26.8 13.5 23.2 C13.5 20.4 15.7 18.6 18.3 18.6 C20.1 18.6 21.9 19.7 24 22 C26.1 19.7 27.9 18.6 29.7 18.6 C32.3 18.6 34.5 20.4 34.5 23.2 C34.5 26.8 31.5 29.5 24 35 Z" fill="url(#hg)"/></svg>Homio<span class="tag">PROTÓTIPO</span></div>
   <div class="seg">
     <button id="segBuyer" class="on" onclick="showView('buyer')">Comprador</button>
     <button id="segAgent" onclick="showView('agent')">Agente</button>
@@ -381,7 +381,7 @@ img{display:block;max-width:100%}
         <!-- discover -->
         <div id="scrDiscover" style="flex:1;display:none;flex-direction:column">
           <div class="bhead">
-            <div class="logo">Imo<b>Match</b></div>
+            <div class="logo"><svg width="24" height="24" viewBox="0 0 48 48" fill="none" style="vertical-align:middle;margin-right:7px"><defs><linearGradient id="hg" x1="4" y1="6" x2="44" y2="44" gradientUnits="userSpaceOnUse"><stop stop-color="#ec4899"/><stop offset=".5" stop-color="#a855f7"/><stop offset="1" stop-color="#3b82f6"/></linearGradient></defs><path d="M24 6 L42 21 V39 Q42 42 39 42 H9 Q6 42 6 39 V21 Z" stroke="url(#hg)" stroke-width="3.6" stroke-linejoin="round"/><path d="M24 35 C16.5 29.5 13.5 26.8 13.5 23.2 C13.5 20.4 15.7 18.6 18.3 18.6 C20.1 18.6 21.9 19.7 24 22 C26.1 19.7 27.9 18.6 29.7 18.6 C32.3 18.6 34.5 20.4 34.5 23.2 C34.5 26.8 31.5 29.5 24 35 Z" fill="url(#hg)"/></svg>Homio</div>
             <div style="display:flex;gap:10px">
               <div class="iconbtn" title="Filtros">⚙</div>
               <div class="iconbtn" title="Preferências">✦</div>
@@ -469,7 +469,7 @@ img{display:block;max-width:100%}
   <div id="viewAgent" class="viewwrap">
     <div class="dash">
       <div class="side">
-        <div class="lg">Imo<b>Match</b> · Pro</div>
+        <div class="lg"><svg width="24" height="24" viewBox="0 0 48 48" fill="none" style="vertical-align:middle;margin-right:7px"><defs><linearGradient id="hg" x1="4" y1="6" x2="44" y2="44" gradientUnits="userSpaceOnUse"><stop stop-color="#ec4899"/><stop offset=".5" stop-color="#a855f7"/><stop offset="1" stop-color="#3b82f6"/></linearGradient></defs><path d="M24 6 L42 21 V39 Q42 42 39 42 H9 Q6 42 6 39 V21 Z" stroke="url(#hg)" stroke-width="3.6" stroke-linejoin="round"/><path d="M24 35 C16.5 29.5 13.5 26.8 13.5 23.2 C13.5 20.4 15.7 18.6 18.3 18.6 C20.1 18.6 21.9 19.7 24 22 C26.1 19.7 27.9 18.6 29.7 18.6 C32.3 18.6 34.5 20.4 34.5 23.2 C34.5 26.8 31.5 29.5 24 35 Z" fill="url(#hg)"/></svg>Homio · Pro</div>
         <div class="nav on" onclick="aTab('overview',this)"><span class="ic">◧</span>Visão geral</div>
         <div class="nav" onclick="aTab('matches',this)"><span class="ic">♥</span>Matches<span class="pill">7</span></div>
         <div class="nav" onclick="aTab('demand',this)"><span class="ic">📊</span>Inteligência de procura</div>
@@ -542,7 +542,7 @@ img{display:block;max-width:100%}
     </div>
   </div>
 </div>
-<div class="foot">Protótipo ImoMatch · dados ilustrativos de Odivelas · nome provisório (a registar)</div>
+<div class="foot">Protótipo Homio · dados ilustrativos de Odivelas · nome provisório (a registar)</div>
 
 <script>
 /* ---------- data ---------- */
@@ -639,7 +639,7 @@ function fly(dir){
 }
 function swipe(dir){const c=topCard();if(!c){return}fly(dir)}
 function superLike(){const p=props[idx];if(!p)return;fly('right');setTimeout(()=>openChatFor(p,true),320)}
-function askAI(){const p=props[idx];if(!p)return;openChatFor(p,false);setTimeout(()=>{pushAI('Olá! Sou o concierge ImoMatch 🤖. Sobre o '+p.title+' em '+p.loc.split(',')[0]+': posso dizer-te tudo sobre o imóvel, tratar da pré-aprovação de crédito ou marcar já uma visita. O que precisas?')},350)}
+function askAI(){const p=props[idx];if(!p)return;openChatFor(p,false);setTimeout(()=>{pushAI('Olá! Sou o concierge Homio 🤖. Sobre o '+p.title+' em '+p.loc.split(',')[0]+': posso dizer-te tudo sobre o imóvel, tratar da pré-aprovação de crédito ou marcar já uma visita. O que precisas?')},350)}
 
 /* ---------- match ---------- */
 let lastMatch=null;
@@ -669,8 +669,8 @@ function tab(s,btn){
 const convos=[];
 function addConversation(p){
   if(convos.find(c=>c.title===p.title))return;
-  convos.unshift({title:p.title,agent:p.agent,img:p.img,last:'Concierge ImoMatch: Olá! Quer marcar visita?',time:'agora',msgs:[
-    {t:'ai',x:'Olá 👋 Sou o concierge ImoMatch. Gostaste do '+p.title+' — o agente da '+p.agent+' também. Queres marcar visita ou tirar dúvidas?'}
+  convos.unshift({title:p.title,agent:p.agent,img:p.img,last:'Concierge Homio: Olá! Quer marcar visita?',time:'agora',msgs:[
+    {t:'ai',x:'Olá 👋 Sou o concierge Homio. Gostaste do '+p.title+' — o agente da '+p.agent+' também. Queres marcar visita ou tirar dúvidas?'}
   ]});
 }
 function renderMatches(){
@@ -695,14 +695,14 @@ function openChatFor(p,marca,existing){
   const box=document.getElementById('msgs');box.innerHTML='';
   if(existing&&p.msgs){p.msgs.forEach(m=>rawMsg(m.t,m.x))}
   else{
-    rawMsg('ai','Olá 👋 Sou o <b>concierge ImoMatch</b>. Estás a falar sobre o <b>'+p.title+'</b> ('+p.loc.split(',')[0]+', '+p.price+'). Posso responder sobre o imóvel, tratar do crédito ou marcar visita.');
+    rawMsg('ai','Olá 👋 Sou o <b>concierge Homio</b>. Estás a falar sobre o <b>'+p.title+'</b> ('+p.loc.split(',')[0]+', '+p.price+'). Posso responder sobre o imóvel, tratar do crédito ou marcar visita.');
   }
   if(marca){setTimeout(()=>{pushAI('Tenho disponibilidade do agente para <b>quinta às 18h</b> ou <b>sábado às 11h</b>. Qual preferes? Confirmo já na agenda dele. 📅')},400)}
   document.getElementById('chat').classList.add('open');
 }
 function closeChat(){document.getElementById('chat').classList.remove('open')}
 function rawMsg(t,x){const b=document.getElementById('msgs');const d=document.createElement('div');
-  d.className='msg '+t;d.innerHTML=(t==='ai'?'<div class="who">🤖 Concierge ImoMatch · IA</div>':'')+x;b.appendChild(d);b.scrollTop=b.scrollHeight}
+  d.className='msg '+t;d.innerHTML=(t==='ai'?'<div class="who">🤖 Concierge Homio · IA</div>':'')+x;b.appendChild(d);b.scrollTop=b.scrollHeight}
 function pushAI(x){rawMsg('ai',x)}
 function send(){const i=document.getElementById('ci');if(!i.value.trim())return;const v=i.value;rawMsg('me',v);i.value='';setTimeout(()=>aiReply(v),500)}
 function quick(x){rawMsg('me',x);setTimeout(()=>aiReply(x),500)}
