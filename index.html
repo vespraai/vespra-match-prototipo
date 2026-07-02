@@ -231,6 +231,34 @@ img{display:block;max-width:100%}
 .callout b{color:#fff}
 @media(max-width:1000px){.dash{grid-template-columns:1fr}.side{display:none}.kpis{grid-template-columns:repeat(2,1fr)}.grid2,.invgrid{grid-template-columns:1fr}}
 .foot{position:fixed;bottom:8px;left:0;right:0;text-align:center;color:var(--dim);font-size:11px;z-index:5}
+
+/* ===== mobile / telemóvel ===== */
+@media(max-width:560px){
+  .topbar{padding:0 14px}
+  .brand{font-size:16px}
+  .brand .tag{display:none}
+  .topbar>div:last-child{display:none}          /* remove espaçador de 150px */
+  .seg button{padding:6px 13px;font-size:12px}
+  .stage{inset:56px 0 0 0;place-items:stretch}
+  .foot{display:none}
+
+  /* moldura ocupa o ecrã todo no telemóvel */
+  .phone{width:100%;max-width:none;height:100%;border-radius:0;border-left:0;border-right:0;border-bottom:0}
+  .notch{display:none}
+
+  /* onboarding com scroll para o CTA nunca ficar cortado */
+  .ob{padding:0 18px;overflow-y:auto}
+  .ob .hero{flex:0 0 auto;justify-content:flex-start;padding-top:14px}
+  .ob .k{font-size:32px}
+  .cta{margin:16px 0 22px}
+
+  /* dashboard do agente */
+  .dash{width:100%;max-width:none;height:100%;border-radius:0;border:0;margin:0 auto}
+  .main{padding:18px 16px}
+  .dhead{flex-direction:column;align-items:flex-start;gap:12px}
+  .dhead h1{font-size:22px}
+  .kpi .v{font-size:24px}
+}
 </style>
 </head>
 <body>
@@ -256,6 +284,10 @@ img{display:block;max-width:100%}
           <div class="hero">
             <div class="k">Encontra a casa<br>que te <b>encaixa</b>.</div>
             <p>Diz-nos o que procuras. A nossa IA mostra-te só o que faz sentido — e liga-te ao agente certo.</p>
+            <div style="display:flex;align-items:center;gap:8px;margin-top:12px;font-size:12px;font-weight:600">
+              <span style="color:var(--info);background:rgba(90,169,255,.16);border:1px solid rgba(90,169,255,.4);padding:4px 10px;border-radius:20px">✓ Perfil de comprador verificado</span>
+              <span style="color:var(--mut);font-weight:500">confiança e prioridade nos matches</span>
+            </div>
             <div class="label">Descreve em palavras (ou usa os filtros)</div>
             <div class="nlbox">
               <input id="nl" placeholder="T2 com varanda perto de metro, até 250 mil…">
@@ -313,7 +345,7 @@ img{display:block;max-width:100%}
           <div class="htitle">Perfil</div>
           <div style="text-align:center;padding:10px 0 6px">
             <div style="width:90px;height:90px;border-radius:26px;margin:0 auto;background-size:cover;background-position:center;border:3px solid var(--amber);background-image:url('https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&q=60')"></div>
-            <div style="font-weight:700;font-size:18px;margin-top:10px">Tiago S.</div>
+            <div style="font-weight:700;font-size:18px;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:7px">Tiago S. <span style="font-size:11px;font-weight:700;color:var(--info);background:rgba(90,169,255,.16);border:1px solid rgba(90,169,255,.4);padding:3px 9px;border-radius:20px">✓ Verificado</span></div>
             <div style="color:var(--mut);font-size:13px">A procurar T2 · até 250 000 € · Odivelas</div>
           </div>
           <div class="panel" style="margin:12px 4px">
