@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Vespra Match · Protótipo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0b0f; --bg2:#0e1016; --card:#15171f; --card2:#1b1e28; --line:#262a36;
+  --ink:#f4f5f7; --mut:#9aa0ab; --dim:#6b7280;
+  --amber:#f0a13e; --amber-d:#c77f1a; --amber-soft:rgba(240,161,62,.14);
+  --like:#37d19b; --pass:#ff5a6a; --info:#5aa9ff; --violet:#9b7bff;
+  --grad:linear-gradient(135deg,#f0a13e,#ff7a59);
+  --shadow:0 24px 60px -20px rgba(0,0,0,.7);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%}
+body{background:radial-gradient(1200px 700px at 80% -10%,#1a1410 0,transparent 60%),var(--bg);
+  color:var(--ink);font-family:Inter,system-ui,sans-serif;overflow:hidden}
+.serif{font-family:Fraunces,Georgia,serif}
+.mono{font-family:'JetBrains Mono',monospace}
+button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
+img{display:block;max-width:100%}
+
+/* ===== top demo switch ===== */
+.topbar{position:fixed;top:0;left:0;right:0;height:56px;display:flex;align-items:center;
+  justify-content:space-between;padding:0 20px;z-index:50;
+  background:linear-gradient(180deg,rgba(10,11,15,.9),rgba(10,11,15,.3));backdrop-filter:blur(8px)}
+.brand{font-family:Fraunces;font-weight:700;font-size:20px;letter-spacing:-.3px}
+.brand b{color:var(--amber)}
+.brand .tag{font-family:Inter;font-weight:500;font-size:10px;color:var(--dim);margin-left:8px;
+  border:1px solid var(--line);padding:2px 7px;border-radius:20px;vertical-align:middle}
+.seg{display:flex;background:var(--card);border:1px solid var(--line);border-radius:30px;padding:4px}
+.seg button{padding:7px 16px;border-radius:24px;font-size:13px;font-weight:600;color:var(--mut);transition:.2s}
+.seg button.on{background:var(--grad);color:#20140a}
+.stage{position:fixed;inset:56px 0 0 0;display:grid;place-items:center;overflow:auto}
+
+/* ===== phone frame ===== */
+.phone{width:390px;max-width:96vw;height:min(800px,calc(100vh - 84px));background:var(--bg2);
+  border:1px solid var(--line);border-radius:42px;box-shadow:var(--shadow);position:relative;
+  overflow:hidden;display:flex;flex-direction:column}
+.notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:150px;height:26px;
+  background:#000;border-radius:0 0 18px 18px;z-index:30}
+.screen{flex:1;position:relative;overflow:hidden;display:flex;flex-direction:column}
+.pad{padding:18px 18px 0}
+
+/* buyer header */
+.bhead{display:flex;align-items:center;justify-content:space-between;padding:26px 20px 12px}
+.bhead .logo{font-family:Fraunces;font-weight:700;font-size:22px}
+.bhead .logo b{color:var(--amber)}
+.iconbtn{width:40px;height:40px;border-radius:50%;background:var(--card);border:1px solid var(--line);
+  display:grid;place-items:center;font-size:17px}
+
+/* ===== swipe deck ===== */
+.deck{flex:1;position:relative;margin:6px 18px 0}
+.pcard{position:absolute;inset:0;border-radius:26px;overflow:hidden;background:var(--card);
+  border:1px solid var(--line);box-shadow:var(--shadow);will-change:transform;
+  display:flex;flex-direction:column;justify-content:flex-end;user-select:none}
+.pcard .photo{position:absolute;inset:0;background-size:cover;background-position:center}
+.pcard .scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05) 30%,rgba(0,0,0,.55) 70%,rgba(0,0,0,.92))}
+.pcard .top{position:absolute;top:14px;left:14px;right:14px;display:flex;justify-content:space-between;gap:8px}
+.chip{background:rgba(0,0,0,.5);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.14);
+  color:#fff;font-size:11px;font-weight:600;padding:5px 10px;border-radius:20px;display:flex;align-items:center;gap:5px}
+.chip.energy{background:rgba(55,209,155,.9);color:#04241a;border:0}
+.chip.verified{background:rgba(90,169,255,.16);color:#bcdcff;border-color:rgba(90,169,255,.4)}
+.pcard .body{position:relative;padding:18px;color:#fff}
+.pcard .price{font-family:Fraunces;font-weight:700;font-size:30px;letter-spacing:-.5px}
+.pcard .title{font-weight:600;font-size:16px;margin-top:2px}
+.pcard .loc{color:#d7dae0;font-size:13px;margin-top:3px;display:flex;align-items:center;gap:5px}
+.facts{display:flex;gap:14px;margin-top:12px}
+.fact{display:flex;align-items:center;gap:6px;font-size:13px;color:#eef0f3}
+.why{margin-top:12px;background:rgba(240,161,62,.16);border:1px solid rgba(240,161,62,.35);
+  padding:9px 12px;border-radius:12px;font-size:12px;color:#ffe6c4;display:flex;gap:8px;align-items:flex-start}
+.why b{color:#fff}
+.stamp{position:absolute;top:40px;font-family:Fraunces;font-weight:700;font-size:34px;padding:6px 16px;
+  border-radius:12px;border:4px solid;opacity:0;transform:rotate(-14deg);pointer-events:none}
+.stamp.like{left:22px;color:var(--like);border-color:var(--like)}
+.stamp.nope{right:22px;color:var(--pass);border-color:var(--pass);transform:rotate(14deg)}
+
+/* action bar */
+.actions{display:flex;justify-content:center;align-items:center;gap:18px;padding:16px 0 10px}
+.act{width:62px;height:62px;border-radius:50%;background:var(--card);border:1px solid var(--line);
+  display:grid;place-items:center;font-size:24px;transition:transform .12s, background .2s;box-shadow:0 8px 20px -8px #000}
+.act:active{transform:scale(.9)}
+.act.sm{width:50px;height:50px;font-size:19px}
+.act.pass{color:var(--pass)} .act.like{color:var(--like)} .act.star{color:var(--info)}
+.act.big{background:var(--grad);color:#20140a;border:0}
+
+/* bottom nav */
+.bnav{display:flex;justify-content:space-around;padding:10px 6px calc(14px + env(safe-area-inset-bottom));
+  border-top:1px solid var(--line);background:var(--bg2)}
+.bnav button{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;color:var(--dim);font-weight:600;padding:4px 14px}
+.bnav button .ic{font-size:20px}
+.bnav button.on{color:var(--amber)}
+.badgeN{position:absolute;transform:translate(10px,-6px);background:var(--pass);color:#fff;font-size:9px;
+  min-width:16px;height:16px;border-radius:10px;display:grid;place-items:center;padding:0 4px;font-weight:700}
+
+/* onboarding */
+.ob{position:absolute;inset:0;background:var(--bg2);z-index:40;display:flex;flex-direction:column;padding:0 22px}
+.ob .hero{flex:1;display:flex;flex-direction:column;justify-content:center;gap:8px}
+.ob .k{font-family:Fraunces;font-size:40px;font-weight:700;line-height:1.05;letter-spacing:-1px}
+.ob .k b{color:var(--amber)}
+.ob p{color:var(--mut);font-size:15px;line-height:1.6;margin:4px 0 0}
+.ob .label{font-size:12px;color:var(--dim);font-weight:600;margin:18px 0 8px;text-transform:uppercase;letter-spacing:.5px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.pref{padding:9px 14px;border-radius:22px;border:1px solid var(--line);background:var(--card);font-size:13px;font-weight:600;color:var(--mut);transition:.15s}
+.pref.on{background:var(--amber-soft);border-color:var(--amber);color:var(--amber)}
+.range{width:100%;margin-top:8px;accent-color:var(--amber)}
+.cta{background:var(--grad);color:#20140a;font-weight:800;font-size:16px;padding:16px;border-radius:16px;
+  width:100%;margin:20px 0 26px;box-shadow:0 12px 30px -10px var(--amber-d)}
+.nlbox{display:flex;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:6px 6px 6px 14px;align-items:center}
+.nlbox input{flex:1;background:none;border:0;color:var(--ink);font-size:14px;outline:none;font-family:inherit}
+.nlbox .go{background:var(--amber-soft);color:var(--amber);border-radius:10px;padding:8px 12px;font-weight:700}
+
+/* lists (matches/chat) */
+.list{flex:1;overflow:auto;padding:6px 14px 20px}
+.htitle{font-family:Fraunces;font-weight:700;font-size:26px;padding:20px 18px 6px}
+.row{display:flex;gap:12px;align-items:center;padding:12px;border-radius:16px;transition:.15s}
+.row:active{background:var(--card)}
+.avatar{width:56px;height:56px;border-radius:16px;background-size:cover;background-position:center;flex:none;position:relative}
+.dot{position:absolute;right:-2px;bottom:-2px;width:16px;height:16px;border-radius:50%;background:var(--like);border:2px solid var(--bg2)}
+.row .m1{font-weight:700;font-size:14px}
+.row .m2{color:var(--mut);font-size:12.5px;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:200px}
+.row .time{margin-left:auto;color:var(--dim);font-size:11px;align-self:flex-start}
+.matchstrip{display:flex;gap:12px;padding:10px 16px 4px;overflow:auto}
+.ms{width:74px;text-align:center;flex:none}
+.ms .ph{width:74px;height:92px;border-radius:16px;background-size:cover;background-position:center;border:2px solid var(--amber)}
+.ms .nm{font-size:11px;margin-top:5px;color:var(--mut)}
+.newmatch{font-size:11px;color:var(--amber);font-weight:700;padding:14px 18px 2px;text-transform:uppercase;letter-spacing:.5px}
+
+/* chat */
+.chat{position:absolute;inset:0;background:var(--bg2);z-index:45;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .28s cubic-bezier(.2,.8,.2,1)}
+.chat.open{transform:none}
+.chead{display:flex;align-items:center;gap:12px;padding:16px 16px 12px;border-bottom:1px solid var(--line)}
+.chead .back{font-size:22px;color:var(--mut)}
+.chead .av{width:40px;height:40px;border-radius:12px;background-size:cover;background-position:center}
+.chead .nm{font-weight:700;font-size:15px}
+.chead .st{font-size:11px;color:var(--like);font-weight:600}
+.msgs{flex:1;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
+.msg{max-width:78%;padding:10px 13px;border-radius:16px;font-size:13.5px;line-height:1.5}
+.msg.them{background:var(--card);border:1px solid var(--line);border-bottom-left-radius:5px;align-self:flex-start}
+.msg.me{background:var(--grad);color:#20140a;border-bottom-right-radius:5px;align-self:flex-end;font-weight:500}
+.msg.ai{background:linear-gradient(135deg,rgba(155,123,255,.16),rgba(90,169,255,.12));border:1px solid rgba(155,123,255,.35);align-self:flex-start;border-bottom-left-radius:5px}
+.msg.ai .who{font-size:10px;color:var(--violet);font-weight:700;margin-bottom:3px;display:flex;gap:5px;align-items:center}
+.qk{display:flex;gap:8px;flex-wrap:wrap;padding:6px 16px 12px}
+.qk button{border:1px solid var(--amber);color:var(--amber);background:var(--amber-soft);border-radius:20px;padding:8px 12px;font-size:12px;font-weight:600}
+.cinput{display:flex;gap:8px;padding:10px 12px calc(14px + env(safe-area-inset-bottom));border-top:1px solid var(--line)}
+.cinput input{flex:1;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:11px 16px;color:var(--ink);outline:none;font-family:inherit;font-size:14px}
+.cinput .snd{width:44px;height:44px;border-radius:50%;background:var(--grad);color:#20140a;font-size:18px;display:grid;place-items:center}
+
+/* match overlay */
+.matchov{position:absolute;inset:0;z-index:60;background:rgba(8,6,4,.85);backdrop-filter:blur(10px);
+  display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px}
+.matchov.show{display:flex;animation:fade .3s}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.matchov .big{font-family:Fraunces;font-weight:700;font-size:48px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:-1px;animation:pop .5s cubic-bezier(.2,1.4,.4,1)}
+@keyframes pop{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
+.matchov p{color:#e7d9c7;margin:10px 0 4px;max-width:280px}
+.pairimg{display:flex;gap:-10px;margin:18px 0}
+.pairimg div{width:96px;height:96px;border-radius:24px;background-size:cover;background-position:center;border:3px solid var(--amber)}
+.pairimg div:last-child{margin-left:-18px}
+.matchov .b1{background:var(--grad);color:#20140a;font-weight:800;padding:14px 30px;border-radius:14px;margin-top:22px;font-size:15px}
+.matchov .b2{margin-top:12px;color:var(--mut);font-size:13px;font-weight:600}
+
+/* ===== agent dashboard ===== */
+.dash{width:min(1180px,96vw);height:min(820px,calc(100vh - 84px));background:var(--bg2);border:1px solid var(--line);
+  border-radius:22px;box-shadow:var(--shadow);display:grid;grid-template-columns:230px 1fr;overflow:hidden}
+.side{background:var(--bg);border-right:1px solid var(--line);padding:20px 14px;display:flex;flex-direction:column;gap:4px}
+.side .lg{font-family:Fraunces;font-weight:700;font-size:19px;padding:6px 10px 18px}
+.side .lg b{color:var(--amber)}
+.nav{display:flex;align-items:center;gap:11px;padding:11px 12px;border-radius:12px;color:var(--mut);font-weight:600;font-size:13.5px;transition:.15s}
+.nav .ic{font-size:17px;width:20px;text-align:center}
+.nav:hover{background:var(--card);color:var(--ink)}
+.nav.on{background:var(--amber-soft);color:var(--amber)}
+.nav .pill{margin-left:auto;background:var(--pass);color:#fff;font-size:10px;font-weight:700;border-radius:10px;padding:1px 7px}
+.side .who{margin-top:auto;display:flex;gap:10px;align-items:center;padding:10px;border-top:1px solid var(--line)}
+.side .who .a{width:38px;height:38px;border-radius:11px;background-size:cover;background-position:center}
+.side .who .n{font-size:12.5px;font-weight:700}
+.side .who .r{font-size:11px;color:var(--dim)}
+.main{overflow:auto;padding:26px 30px}
+.dhead{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:22px}
+.dhead h1{font-family:Fraunces;font-weight:700;font-size:28px;margin:0}
+.dhead p{color:var(--mut);font-size:13px;margin:4px 0 0}
+.dbtn{background:var(--grad);color:#20140a;font-weight:700;font-size:13px;padding:11px 18px;border-radius:12px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px}
+.kpi .l{color:var(--mut);font-size:12px;font-weight:600;display:flex;align-items:center;gap:7px}
+.kpi .v{font-family:Fraunces;font-weight:700;font-size:30px;margin-top:8px;letter-spacing:-.5px}
+.kpi .d{font-size:11.5px;font-weight:700;margin-top:2px}
+.kpi .up{color:var(--like)} .kpi .dn{color:var(--pass)}
+.grid2{display:grid;grid-template-columns:1.4fr 1fr;gap:16px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
+.panel h3{margin:0 0 4px;font-size:15px}
+.panel .sub{color:var(--mut);font-size:12px;margin-bottom:14px}
+.tag2{font-size:10px;font-weight:700;padding:3px 8px;border-radius:8px;background:var(--amber-soft);color:var(--amber)}
+.demand{display:flex;flex-direction:column;gap:12px}
+.dm{}
+.dm .t{display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px}
+.dm .t b{font-weight:700}.dm .t span{color:var(--mut)}
+.bar{height:9px;background:var(--card2);border-radius:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--grad);border-radius:6px}
+.mrow{display:flex;gap:12px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line)}
+.mrow:last-child{border:0}
+.mrow .a{width:44px;height:44px;border-radius:12px;background-size:cover;background-position:center;flex:none}
+.mrow .n{font-weight:700;font-size:13.5px}
+.mrow .s{color:var(--mut);font-size:12px;margin-top:2px}
+.qbadge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:8px;display:inline-flex;align-items:center;gap:4px}
+.qb-ok{background:rgba(55,209,155,.15);color:var(--like)}
+.qb-mid{background:rgba(240,161,62,.15);color:var(--amber)}
+.mrow .act2{margin-left:auto;display:flex;gap:8px}
+.sbtn{border:1px solid var(--line);background:var(--bg2);border-radius:10px;padding:8px 12px;font-size:12px;font-weight:600;color:var(--ink)}
+.sbtn.p{background:var(--grad);color:#20140a;border:0}
+.invgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.inv{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.inv .ph{height:120px;background-size:cover;background-position:center;position:relative}
+.inv .ph .st{position:absolute;top:10px;left:10px}
+.inv .ph .mt{position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.15);color:#fff;font-size:11px;font-weight:700;padding:4px 9px;border-radius:20px}
+.inv .in{padding:12px 14px}
+.inv .pr{font-family:Fraunces;font-weight:700;font-size:19px}
+.inv .ti{font-size:12.5px;color:var(--mut);margin-top:2px}
+.hide{display:none!important}
+.viewwrap{display:none}.viewwrap.on{display:block}
+.energy-b{background:rgba(55,209,155,.9);color:#04241a;font-size:11px;font-weight:700;padding:4px 9px;border-radius:8px}
+.agdrow{display:flex;gap:14px;align-items:center;padding:13px;border:1px solid var(--line);border-radius:14px;margin-bottom:10px;background:var(--card)}
+.agdrow .tm{font-family:Fraunces;font-weight:700;font-size:18px;width:64px}
+.agdrow .info b{font-size:13.5px}.agdrow .info div{color:var(--mut);font-size:12px;margin-top:2px}
+.callout{background:linear-gradient(135deg,rgba(240,161,62,.14),rgba(155,123,255,.10));border:1px solid rgba(240,161,62,.3);border-radius:14px;padding:14px 16px;font-size:13px;color:#ffe6c4;display:flex;gap:10px;margin-bottom:18px}
+.callout b{color:#fff}
+@media(max-width:1000px){.dash{grid-template-columns:1fr}.side{display:none}.kpis{grid-template-columns:repeat(2,1fr)}.grid2,.invgrid{grid-template-columns:1fr}}
+.foot{position:fixed;bottom:8px;left:0;right:0;text-align:center;color:var(--dim);font-size:11px;z-index:5}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">Vespra<b>Match</b><span class="tag">PROTÓTIPO</span></div>
+  <div class="seg">
+    <button id="segBuyer" class="on" onclick="showView('buyer')">Comprador</button>
+    <button id="segAgent" onclick="showView('agent')">Agente</button>
+  </div>
+  <div style="width:150px"></div>
+</div>
+
+<div class="stage">
+  <!-- ================= BUYER ================= -->
+  <div id="viewBuyer" class="viewwrap on">
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="screen">
+
+        <!-- onboarding -->
+        <div class="ob" id="ob">
+          <div class="hero">
+            <div class="k">Encontra a casa<br>que te <b>encaixa</b>.</div>
+            <p>Diz-nos o que procuras. A nossa IA mostra-te só o que faz sentido — e liga-te ao agente certo.</p>
+            <div class="label">Descreve em palavras (ou usa os filtros)</div>
+            <div class="nlbox">
+              <input id="nl" placeholder="T2 com varanda perto de metro, até 250 mil…">
+              <button class="go" onclick="parseNL()">IA →</button>
+            </div>
+            <div class="label">Tipologia</div>
+            <div class="chips" id="typChips">
+              <button class="pref" onclick="tgl(this)">T1</button>
+              <button class="pref on" onclick="tgl(this)">T2</button>
+              <button class="pref" onclick="tgl(this)">T3</button>
+              <button class="pref" onclick="tgl(this)">Moradia</button>
+            </div>
+            <div class="label">Zona</div>
+            <div class="chips">
+              <button class="pref on" onclick="tgl(this)">Odivelas</button>
+              <button class="pref on" onclick="tgl(this)">Colinas do Cruzeiro</button>
+              <button class="pref" onclick="tgl(this)">Ramada</button>
+              <button class="pref" onclick="tgl(this)">Lumiar</button>
+            </div>
+            <div class="label" id="budLbl">Orçamento máximo — 250 000 €</div>
+            <input class="range" type="range" min="120" max="600" value="250" oninput="document.getElementById('budLbl').textContent='Orçamento máximo — '+(this.value*1000).toLocaleString('pt-PT')+' €'">
+          </div>
+          <button class="cta" onclick="startSwipe()">Ver as minhas casas ✦</button>
+        </div>
+
+        <!-- discover -->
+        <div id="scrDiscover" style="flex:1;display:none;flex-direction:column">
+          <div class="bhead">
+            <div class="logo">Vespra<b>Match</b></div>
+            <div style="display:flex;gap:10px">
+              <div class="iconbtn" title="Filtros">⚙</div>
+              <div class="iconbtn" title="Preferências">✦</div>
+            </div>
+          </div>
+          <div class="deck" id="deck"></div>
+          <div class="actions">
+            <button class="act sm pass" onclick="swipe('left')" title="Passar">✕</button>
+            <button class="act star" onclick="superLike()" title="Marcar visita">📅</button>
+            <button class="act big" onclick="swipe('right')" title="Gosto">♥</button>
+            <button class="act sm" style="color:var(--violet)" onclick="askAI()" title="Perguntar à IA">💬</button>
+          </div>
+        </div>
+
+        <!-- matches -->
+        <div id="scrMatches" class="list" style="display:none">
+          <div class="htitle">Matches</div>
+          <div class="newmatch">Novos matches</div>
+          <div class="matchstrip" id="mstrip"></div>
+          <div class="newmatch">Conversas</div>
+          <div id="convs"></div>
+        </div>
+
+        <!-- profile -->
+        <div id="scrProfile" class="list" style="display:none">
+          <div class="htitle">Perfil</div>
+          <div style="text-align:center;padding:10px 0 6px">
+            <div style="width:90px;height:90px;border-radius:26px;margin:0 auto;background-size:cover;background-position:center;border:3px solid var(--amber);background-image:url('https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&q=60')"></div>
+            <div style="font-weight:700;font-size:18px;margin-top:10px">Tiago S.</div>
+            <div style="color:var(--mut);font-size:13px">A procurar T2 · até 250 000 € · Odivelas</div>
+          </div>
+          <div class="panel" style="margin:12px 4px">
+            <h3 style="font-size:14px">A tua procura ✦</h3>
+            <div class="sub">A IA afina isto a cada swipe</div>
+            <div class="chips"><button class="pref on">T2</button><button class="pref on">Varanda</button><button class="pref on">Perto de metro</button><button class="pref">Garagem</button><button class="pref on">Luz natural</button></div>
+          </div>
+          <div class="panel" style="margin:0 4px">
+            <h3 style="font-size:14px">Crédito 🏦</h3>
+            <div class="sub">Pré-aprovação sobe a tua prioridade nos matches</div>
+            <button class="sbtn p" style="width:100%;padding:11px" onclick="alert('No produto real: simulação e pré-aprovação de crédito com parceiro.')">Simular pré-aprovação</button>
+          </div>
+        </div>
+
+        <!-- chat -->
+        <div class="chat" id="chat">
+          <div class="chead">
+            <div class="back" onclick="closeChat()">‹</div>
+            <div class="av" id="chatAv"></div>
+            <div><div class="nm" id="chatNm">—</div><div class="st">● online</div></div>
+          </div>
+          <div class="msgs" id="msgs"></div>
+          <div class="qk" id="qk">
+            <button onclick="quick('Podemos marcar visita?')">📅 Marcar visita</button>
+            <button onclick="quick('O imóvel tem garagem?')">Tem garagem?</button>
+            <button onclick="quick('Qual a classe energética?')">Classe energética?</button>
+          </div>
+          <div class="cinput">
+            <input id="ci" placeholder="Escreve uma mensagem…" onkeydown="if(event.key==='Enter')send()">
+            <button class="snd" onclick="send()">➤</button>
+          </div>
+        </div>
+
+        <!-- match overlay -->
+        <div class="matchov" id="matchov">
+          <div class="big">É um Match! ✦</div>
+          <p id="matchTxt">Tu e o agente da <b>Veigas Imobiliária</b> gostaram deste T2.</p>
+          <div class="pairimg"><div id="pi1"></div><div id="pi2" style="background-image:url('https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&q=60')"></div></div>
+          <button class="b1" onclick="openMatchChat()">Falar agora com o agente</button>
+          <button class="b2" onclick="hideMatch()">Continuar a ver casas</button>
+        </div>
+
+        <!-- bottom nav -->
+        <div class="bnav" id="bnav" style="display:none">
+          <button class="on" data-s="Discover" onclick="tab('Discover',this)"><span class="ic">🔥</span>Descobrir</button>
+          <button data-s="Matches" onclick="tab('Matches',this)"><span class="ic">♥</span>Matches<span class="badgeN">3</span></button>
+          <button data-s="Profile" onclick="tab('Profile',this)"><span class="ic">👤</span>Perfil</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= AGENT ================= -->
+  <div id="viewAgent" class="viewwrap">
+    <div class="dash">
+      <div class="side">
+        <div class="lg">Vespra<b>Match</b> · Pro</div>
+        <div class="nav on" onclick="aTab('overview',this)"><span class="ic">◧</span>Visão geral</div>
+        <div class="nav" onclick="aTab('matches',this)"><span class="ic">♥</span>Matches<span class="pill">7</span></div>
+        <div class="nav" onclick="aTab('demand',this)"><span class="ic">📊</span>Inteligência de procura</div>
+        <div class="nav" onclick="aTab('inv',this)"><span class="ic">🏠</span>Inventário</div>
+        <div class="nav" onclick="aTab('agenda',this)"><span class="ic">📅</span>Agenda</div>
+        <div class="nav" onclick="alert('Formulário com classe energética obrigatória, gerador de texto por IA e deteção de duplicados.')"><span class="ic">＋</span>Adicionar imóvel</div>
+        <div class="who">
+          <div class="a" style="background-image:url('https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=120&q=60')"></div>
+          <div><div class="n">Sofia Marques</div><div class="r">Veigas · Colinas</div></div>
+        </div>
+      </div>
+      <div class="main">
+        <!-- overview -->
+        <div id="aOverview">
+          <div class="dhead">
+            <div><h1>Bom dia, Sofia ✦</h1><p>7 matches qualificados à tua espera · 3 visitas hoje</p></div>
+            <button class="dbtn" onclick="alert('Gera anúncio com IA (título, descrição, classe energética) e publica.')">＋ Novo imóvel</button>
+          </div>
+          <div class="callout">💡 <div><b>Lacuna que fechamos:</b> nos portais tradicionais recebes leads frios. Aqui recebes compradores que já disseram o que querem e passaram pelo teu inventário — matches quentes e qualificados por IA.</div></div>
+          <div class="kpis">
+            <div class="kpi"><div class="l">♥ Matches qualificados</div><div class="v">7</div><div class="d up">▲ +40% esta semana</div></div>
+            <div class="kpi"><div class="l">📅 Visitas marcadas</div><div class="v">12</div><div class="d up">▲ +3 hoje</div></div>
+            <div class="kpi"><div class="l">🏠 Imóveis ativos</div><div class="v">9</div><div class="d" style="color:var(--mut)">2 em destaque</div></div>
+            <div class="kpi"><div class="l">📊 Procura na tua zona</div><div class="v">34</div><div class="d up">compradores ativos</div></div>
+          </div>
+          <div class="grid2">
+            <div class="panel">
+              <div style="display:flex;justify-content:space-between;align-items:center"><h3>Matches recentes</h3><span class="tag2">qualificados por IA</span></div>
+              <div class="sub">Compradores que gostaram dos teus imóveis</div>
+              <div id="aMatchList"></div>
+            </div>
+            <div class="panel">
+              <h3>Procura vs. o teu stock</h3>
+              <div class="sub">Onde há compradores e tu ainda não tens imóvel</div>
+              <div class="demand" id="aDemandMini"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- matches full -->
+        <div id="aMatches" class="hide">
+          <div class="dhead"><div><h1>Matches qualificados</h1><p>Cada comprador já definiu preferências e passou pelo teu inventário</p></div></div>
+          <div class="panel" id="aMatchFull"></div>
+        </div>
+
+        <!-- demand -->
+        <div id="aDemand" class="hide">
+          <div class="dhead"><div><h1>Inteligência de procura</h1><p>O que os compradores procuram na tua zona — dados que os portais não te dão</p></div></div>
+          <div class="callout">🎯 <div><b>Ferramenta única:</b> reverse-matching. Vês a procura agregada e angarias imóveis certos <b>antes</b> de os teres — deixas de adivinhar.</div></div>
+          <div class="grid2">
+            <div class="panel"><h3>Procura por tipologia · Odivelas</h3><div class="sub">Compradores ativos nos últimos 30 dias</div><div class="demand" id="aDemandFull"></div></div>
+            <div class="panel"><h3>Oportunidades de angariação</h3><div class="sub">Muita procura, pouca oferta = angaria aqui</div>
+              <div id="aOpp"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- inventory -->
+        <div id="aInv" class="hide">
+          <div class="dhead"><div><h1>Inventário</h1><p>9 imóveis · classe energética obrigatória para publicar</p></div><button class="dbtn">＋ Adicionar</button></div>
+          <div class="invgrid" id="aInvGrid"></div>
+        </div>
+
+        <!-- agenda -->
+        <div id="aAgenda" class="hide">
+          <div class="dhead"><div><h1>Agenda de visitas</h1><p>Marcadas automaticamente pelo concierge de IA</p></div></div>
+          <div class="panel" id="aAgendaList"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="foot">Protótipo Vespra Match · dados ilustrativos de Odivelas · nome provisório (a registar)</div>
+
+<script>
+/* ---------- data ---------- */
+const props=[
+  {price:"249 000 €",title:"T2 com varanda e luz",loc:"Colinas do Cruzeiro, Odivelas",br:2,ba:1,m2:78,en:"A",agent:"Veigas Imobiliária",why:"Bate 4/4 dos teus must-haves: T2, varanda, perto de metro e muita luz.",img:"https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&q=70"},
+  {price:"219 000 €",title:"T2 renovado, cozinha equipada",loc:"Arroja, Odivelas",br:2,ba:1,m2:71,en:"B",agent:"ByNunes",why:"Dentro do orçamento e a 6 min do metro Odivelas.",img:"https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&q=70"},
+  {price:"285 000 €",title:"T3 amplo com garagem",loc:"Ramada, Odivelas",br:3,ba:2,m2:104,en:"A",agent:"ERA Odivelas",why:"Um degrau acima: T3 com garagem, caso queiras mais espaço.",img:"https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&q=70"},
+  {price:"235 000 €",title:"T2 varanda sul, prédio novo",loc:"Colinas do Cruzeiro, Odivelas",br:2,ba:2,m2:83,en:"A",agent:"Century 21 Arte",why:"Exposição solar e 2 WC — subiu porque guardaste imóveis com varanda.",img:"https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800&q=70"},
+  {price:"198 000 €",title:"T1+1 acolhedor",loc:"Póvoa de Santo Adrião",br:1,ba:1,m2:58,en:"C",agent:"LisKasas",why:"Abaixo do orçamento — bom se quiseres margem para obras.",img:"https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=800&q=70"},
+  {price:"265 000 €",title:"T2 moderno com terraço",loc:"Jardim da Amoreira, Ramada",br:2,ba:2,m2:88,en:"A",agent:"Predipereira",why:"Terraço + classe A — combina com o que mais gostaste até agora.",img:"https://images.unsplash.com/photo-1560185007-cde436f6a4d0?w=800&q=70"}
+];
+let idx=0;
+
+/* ---------- view switch ---------- */
+function showView(v){
+  document.getElementById('viewBuyer').classList.toggle('on',v==='buyer');
+  document.getElementById('viewAgent').classList.toggle('on',v==='agent');
+  document.getElementById('segBuyer').classList.toggle('on',v==='buyer');
+  document.getElementById('segAgent').classList.toggle('on',v==='agent');
+  if(v==='agent') buildAgent();
+}
+
+/* ---------- onboarding ---------- */
+function tgl(b){b.classList.toggle('on')}
+function parseNL(){
+  const v=document.getElementById('nl').value||'T2 com varanda perto de metro, até 250 mil';
+  document.getElementById('nl').value=v;
+  // fake parse feedback
+  document.getElementById('budLbl').textContent='Orçamento máximo — 250 000 €';
+  alert('IA entendeu: Tipologia T2 · Varanda ✓ · Perto de metro ✓ · até 250 000 €. Preferências aplicadas.');
+}
+function startSwipe(){
+  document.getElementById('ob').style.display='none';
+  document.getElementById('scrDiscover').style.display='flex';
+  document.getElementById('bnav').style.display='flex';
+  buildDeck();
+}
+
+/* ---------- deck ---------- */
+function buildDeck(){
+  const deck=document.getElementById('deck');deck.innerHTML='';
+  for(let i=Math.min(idx+2,props.length-1);i>=idx;i--){
+    if(i>=props.length)continue;
+    const p=props[i];
+    const c=document.createElement('div');c.className='pcard';c.dataset.i=i;
+    c.style.zIndex=100-i;
+    const scale=1-(i-idx)*0.04, ty=(i-idx)*12;
+    c.style.transform=`translateY(${ty}px) scale(${scale})`;
+    c.innerHTML=`
+      <div class="photo" style="background-image:url('${p.img}')"></div>
+      <div class="scrim"></div>
+      <div class="stamp like">GOSTO</div><div class="stamp nope">PASSO</div>
+      <div class="top">
+        <span class="chip verified">✓ ${p.agent}</span>
+        <span class="chip energy">⚡ ${p.en}</span>
+      </div>
+      <div class="body">
+        <div class="price">${p.price}</div>
+        <div class="title">${p.title}</div>
+        <div class="loc">📍 ${p.loc}</div>
+        <div class="facts">
+          <div class="fact">🛏 ${p.br} quartos</div><div class="fact">🛁 ${p.ba} WC</div><div class="fact">📐 ${p.m2} m²</div>
+        </div>
+        <div class="why">✦ <div><b>Porque te mostramos:</b> ${p.why}</div></div>
+      </div>`;
+    deck.appendChild(c);
+    if(i===idx) enableDrag(c);
+  }
+  if(idx>=props.length){
+    deck.innerHTML='<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px;color:var(--mut)"><div style="font-size:44px">✦</div><div class="serif" style="font-size:22px;color:var(--ink);margin-top:10px">Por agora é tudo!</div><div style="margin-top:6px">A IA está a procurar mais casas para ti. Avisamos-te por notificação.</div></div>';
+  }
+}
+function topCard(){return document.querySelector(`.pcard[data-i="${idx}"]`)}
+function enableDrag(c){
+  let sx=0,sy=0,dx=0,dy=0,drag=false;
+  const like=c.querySelector('.stamp.like'),nope=c.querySelector('.stamp.nope');
+  const down=e=>{drag=true;const p=e.touches?e.touches[0]:e;sx=p.clientX;sy=p.clientY;c.style.transition='none'};
+  const move=e=>{if(!drag)return;const p=e.touches?e.touches[0]:e;dx=p.clientX-sx;dy=p.clientY-sy;
+    c.style.transform=`translate(${dx}px,${dy}px) rotate(${dx/18}deg)`;
+    like.style.opacity=Math.max(0,dx/90);nope.style.opacity=Math.max(0,-dx/90);};
+  const up=()=>{if(!drag)return;drag=false;c.style.transition='transform .3s ease';
+    if(dx>110){fly('right')}else if(dx<-110){fly('left')}
+    else{c.style.transform='';like.style.opacity=0;nope.style.opacity=0}dx=0};
+  c.addEventListener('mousedown',down);window.addEventListener('mousemove',move);window.addEventListener('mouseup',up);
+  c.addEventListener('touchstart',down,{passive:true});c.addEventListener('touchmove',move,{passive:true});c.addEventListener('touchend',up);
+}
+function fly(dir){
+  const c=topCard();if(!c)return;
+  c.style.transition='transform .4s ease, opacity .4s';
+  c.style.transform=`translate(${dir==='right'?600:-600}px,${dir==='right'?-60:60}px) rotate(${dir==='right'?30:-30}deg)`;
+  c.style.opacity='0';
+  const liked=dir==='right', p=props[idx];
+  setTimeout(()=>{idx++;buildDeck(); if(liked) maybeMatch(p);},260);
+}
+function swipe(dir){const c=topCard();if(!c){return}fly(dir)}
+function superLike(){const p=props[idx];if(!p)return;fly('right');setTimeout(()=>openChatFor(p,true),320)}
+function askAI(){const p=props[idx];if(!p)return;openChatFor(p,false);setTimeout(()=>{pushAI('Olá! Sou o concierge Vespra 🤖. Sobre o '+p.title+' em '+p.loc.split(',')[0]+': posso dizer-te tudo sobre o imóvel, tratar da pré-aprovação de crédito ou marcar já uma visita. O que precisas?')},350)}
+
+/* ---------- match ---------- */
+let lastMatch=null;
+function maybeMatch(p){
+  // demo: like on Veigas / Century21 / Predipereira triggers a match
+  if(/Veigas|Century|Predipereira|ERA/.test(p.agent)){
+    lastMatch=p;
+    document.getElementById('matchTxt').innerHTML=`Tu e o agente da <b>${p.agent}</b> gostaram deste ${p.title.split(' ')[0]}.`;
+    document.getElementById('pi2').style.backgroundImage=`url('${p.img}')`;
+    document.getElementById('pi1').style.backgroundImage="url('https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&q=60')";
+    document.getElementById('matchov').classList.add('show');
+    addConversation(p);
+  }
+}
+function hideMatch(){document.getElementById('matchov').classList.remove('show')}
+function openMatchChat(){hideMatch();openChatFor(lastMatch,true)}
+
+/* ---------- tabs ---------- */
+function tab(s,btn){
+  ['Discover','Matches','Profile'].forEach(x=>document.getElementById('scr'+x).style.display='none');
+  document.getElementById('scr'+s).style.display=(s==='Discover')?'flex':'block';
+  document.querySelectorAll('.bnav button').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
+  if(s==='Matches')renderMatches();
+}
+
+/* ---------- matches list ---------- */
+const convos=[];
+function addConversation(p){
+  if(convos.find(c=>c.title===p.title))return;
+  convos.unshift({title:p.title,agent:p.agent,img:p.img,last:'Concierge Vespra: Olá! Quer marcar visita?',time:'agora',msgs:[
+    {t:'ai',x:'Olá 👋 Sou o concierge Vespra. Gostaste do '+p.title+' — o agente da '+p.agent+' também. Queres marcar visita ou tirar dúvidas?'}
+  ]});
+}
+function renderMatches(){
+  // strip
+  const strip=document.getElementById('mstrip');strip.innerHTML='';
+  if(convos.length===0){strip.innerHTML='<div style="color:var(--dim);font-size:12px;padding:8px">Ainda sem matches — dá like a uma casa ♥</div>'}
+  convos.forEach(c=>{strip.innerHTML+=`<div class="ms" onclick="openConv('${c.title.replace(/'/g,'')}')"><div class="ph" style="background-image:url('${c.img}')"></div><div class="nm">${c.agent.split(' ')[0]}</div></div>`});
+  const list=document.getElementById('convs');list.innerHTML='';
+  convos.forEach(c=>{list.innerHTML+=`<div class="row" onclick="openConv('${c.title.replace(/'/g,'')}')">
+    <div class="avatar" style="background-image:url('${c.img}')"><span class="dot"></span></div>
+    <div><div class="m1">${c.agent}</div><div class="m2">${c.last}</div></div>
+    <div class="time">${c.time}</div></div>`});
+}
+function openConv(t){const c=convos.find(x=>x.title.replace(/'/g,'')===t);if(c)openChatFor(c,false,true)}
+
+/* ---------- chat ---------- */
+let curChat=null;
+function openChatFor(p,marca,existing){
+  curChat=p;
+  document.getElementById('chatNm').textContent=p.agent;
+  document.getElementById('chatAv').style.backgroundImage=`url('${p.img}')`;
+  const box=document.getElementById('msgs');box.innerHTML='';
+  if(existing&&p.msgs){p.msgs.forEach(m=>rawMsg(m.t,m.x))}
+  else{
+    rawMsg('ai','Olá 👋 Sou o <b>concierge Vespra</b>. Estás a falar sobre o <b>'+p.title+'</b> ('+p.loc.split(',')[0]+', '+p.price+'). Posso responder sobre o imóvel, tratar do crédito ou marcar visita.');
+  }
+  if(marca){setTimeout(()=>{pushAI('Tenho disponibilidade do agente para <b>quinta às 18h</b> ou <b>sábado às 11h</b>. Qual preferes? Confirmo já na agenda dele. 📅')},400)}
+  document.getElementById('chat').classList.add('open');
+}
+function closeChat(){document.getElementById('chat').classList.remove('open')}
+function rawMsg(t,x){const b=document.getElementById('msgs');const d=document.createElement('div');
+  d.className='msg '+t;d.innerHTML=(t==='ai'?'<div class="who">🤖 Concierge Vespra · IA</div>':'')+x;b.appendChild(d);b.scrollTop=b.scrollHeight}
+function pushAI(x){rawMsg('ai',x)}
+function send(){const i=document.getElementById('ci');if(!i.value.trim())return;const v=i.value;rawMsg('me',v);i.value='';setTimeout(()=>aiReply(v),500)}
+function quick(x){rawMsg('me',x);setTimeout(()=>aiReply(x),500)}
+function aiReply(q){
+  q=q.toLowerCase();let r;
+  if(q.includes('visita'))r='Perfeito 📅 Tenho <b>quinta às 18h</b> ou <b>sábado às 11h</b>. Escolhe uma e marco já com o agente — recebes a morada e um lembrete.';
+  else if(q.includes('garagem'))r='Este imóvel '+(curChat.br>=3?'<b>tem</b> garagem fechada para 1 carro.':'não tem garagem, mas tem estacionamento na via. Queres que filtre só com garagem?');
+  else if(q.includes('energ'))r='A classe energética é <b>'+(curChat.en||'A')+'</b> ✅ (certificado válido, obrigatório por lei — nós verificamos).';
+  else if(q.includes('preç')||q.includes('negoci'))r='O preço é <b>'+curChat.price+'</b> e está coerente com a zona (verificámos o histórico). Queres que sonde o agente sobre margem de negociação?';
+  else if(q.includes('crédito')||q.includes('credito')||q.includes('banco'))r='Posso iniciar já uma <b>pré-aprovação de crédito</b> com o nosso parceiro — sobe a tua prioridade nos matches. Avanço?';
+  else r='Boa pergunta! Reencaminho ao agente da '+curChat.agent+' e volto já com a resposta. Entretanto, queres marcar visita? 📅';
+  pushAI(r);
+}
+
+/* ================= AGENT ================= */
+const buyers=[
+  {n:"Comprador · T2 Odivelas",s:"até 250 000 € · varanda · perto de metro",img:"https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&q=60",q:"ok",qt:"Crédito pré-aprovado",prop:"T2 Colinas do Cruzeiro"},
+  {n:"Casal · T3 com garagem",s:"até 320 000 € · 3 quartos · garagem",img:"https://images.unsplash.com/photo-1521119989659-a83eee488004?w=120&q=60",q:"ok",qt:"Pré-aprovado · pronto a visitar",prop:"T3 Ramada"},
+  {n:"Compradora · T2 varanda",s:"até 260 000 € · exposição sul",img:"https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=120&q=60",q:"mid",qt:"A tratar do crédito",prop:"T2 varanda sul"},
+  {n:"Investidor · T1/T2",s:"até 220 000 € · para arrendar",img:"https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=120&q=60",q:"ok",qt:"Compra a pronto",prop:"T1+1 Póvoa"},
+  {n:"Família · T3 Ramada",s:"até 300 000 € · perto de escolas",img:"https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120&q=60",q:"mid",qt:"A comparar zonas",prop:"T3 Ramada"},
+];
+const demand=[
+  {k:"T2 · até 260k · Colinas do Cruzeiro",v:88,n:"24 compradores"},
+  {k:"T3 · até 320k · Ramada",v:64,n:"17 compradores"},
+  {k:"T1 · arrendamento · Odivelas",v:52,n:"14 compradores"},
+  {k:"Moradia · até 450k · Caneças",v:33,n:"9 compradores"}
+];
+const opp=[
+  {k:"T2 com varanda · Colinas",d:"24 procuram · só 3 imóveis",lvl:"Alta"},
+  {k:"T3 garagem · Ramada",d:"17 procuram · 5 imóveis",lvl:"Média"},
+  {k:"T1 arrendamento · Odivelas",d:"14 procuram · 2 imóveis",lvl:"Alta"}
+];
+const inv=[
+  {pr:"249 000 €",ti:"T2 varanda · Colinas do Cruzeiro",en:"A",m:5,st:"Ativo",img:"https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=500&q=60"},
+  {pr:"285 000 €",ti:"T3 garagem · Ramada",en:"A",m:3,st:"Destaque",img:"https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=500&q=60"},
+  {pr:"219 000 €",ti:"T2 renovado · Arroja",en:"B",m:2,st:"Ativo",img:"https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=500&q=60"},
+  {pr:"198 000 €",ti:"T1+1 · Póvoa Sto Adrião",en:"C",m:4,st:"Ativo",img:"https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=500&q=60"},
+  {pr:"265 000 €",ti:"T2 terraço · J. Amoreira",en:"A",m:6,st:"Destaque",img:"https://images.unsplash.com/photo-1560185007-cde436f6a4d0?w=500&q=60"},
+  {pr:"235 000 €",ti:"T2 novo · Colinas",en:"A",m:1,st:"Ativo",img:"https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=500&q=60"}
+];
+const agenda=[
+  {tm:"11:00",b:"Casal · T3 com garagem",d:"T3 Ramada · confirmada pelo concierge",img:""},
+  {tm:"15:30",b:"Comprador · T2 Odivelas",d:"T2 Colinas do Cruzeiro · pré-aprovado",img:""},
+  {tm:"18:00",b:"Compradora · T2 varanda",d:"T2 varanda sul · 1ª visita",img:""}
+];
+function qbadge(q,t){return `<span class="qbadge ${q==='ok'?'qb-ok':'qb-mid'}">${q==='ok'?'✓':'◔'} ${t}</span>`}
+function buildAgent(){
+  // recent matches (mini)
+  document.getElementById('aMatchList').innerHTML=buyers.slice(0,3).map(b=>`
+    <div class="mrow"><div class="a" style="background-image:url('${b.img}')"></div>
+      <div><div class="n">${b.n}</div><div class="s">${b.s}</div><div style="margin-top:5px">${qbadge(b.q,b.qt)}</div></div>
+      <div class="act2"><button class="sbtn">Ver</button><button class="sbtn p">Marcar visita</button></div></div>`).join('');
+  document.getElementById('aMatchFull').innerHTML=buyers.map(b=>`
+    <div class="mrow"><div class="a" style="background-image:url('${b.img}')"></div>
+      <div><div class="n">${b.n}</div><div class="s">${b.s} · interessado em ${b.prop}</div><div style="margin-top:5px">${qbadge(b.q,b.qt)}</div></div>
+      <div class="act2"><button class="sbtn">Perfil</button><button class="sbtn">Mensagem</button><button class="sbtn p">Marcar visita</button></div></div>`).join('');
+  // demand
+  const dm=demand.map(d=>`<div class="dm"><div class="t"><b>${d.k}</b><span>${d.n}</span></div><div class="bar"><i style="width:${d.v}%"></i></div></div>`).join('');
+  document.getElementById('aDemandMini').innerHTML=dm;document.getElementById('aDemandFull').innerHTML=dm;
+  document.getElementById('aOpp').innerHTML=opp.map(o=>`<div class="mrow"><div><div class="n">${o.k}</div><div class="s">${o.d}</div></div><span class="qbadge ${o.lvl==='Alta'?'qb-ok':'qb-mid'}" style="margin-left:auto">${o.lvl==='Alta'?'🔥':'●'} procura ${o.lvl}</span></div>`).join('');
+  // inventory
+  document.getElementById('aInvGrid').innerHTML=inv.map(p=>`<div class="inv"><div class="ph" style="background-image:url('${p.img}')"><span class="st"><span class="tag2" style="background:${p.st==='Destaque'?'var(--grad)':'rgba(0,0,0,.55)'};color:${p.st==='Destaque'?'#20140a':'#fff'}">${p.st}</span></span><span class="mt">♥ ${p.m} matches</span></div><div class="in"><div class="pr">${p.pr}</div><div class="ti">${p.ti}</div><div style="margin-top:8px"><span class="energy-b">⚡ Classe ${p.en}</span></div></div></div>`).join('');
+  // agenda
+  document.getElementById('aAgendaList').innerHTML=agenda.map(a=>`<div class="agdrow"><div class="tm">${a.tm}</div><div class="info"><b>${a.b}</b><div>${a.d}</div></div><button class="sbtn" style="margin-left:auto">Detalhes</button></div>`).join('');
+}
+function aTab(t,el){
+  ['Overview','Matches','Demand','Inv','Agenda'].forEach(x=>document.getElementById('a'+x).classList.add('hide'));
+  document.getElementById('a'+t.charAt(0).toUpperCase()+t.slice(1)).classList.remove('hide');
+  document.querySelectorAll('.side .nav').forEach(n=>n.classList.remove('on'));el.classList.add('on');
+}
+</script>
+</body>
+</html>
